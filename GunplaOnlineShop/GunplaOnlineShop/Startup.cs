@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GunplaOnlineShop.Data;
+using GunplaOnlineShop.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,6 +27,16 @@ namespace GunplaOnlineShop
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // configure and add mysql
+            var dbHost = Configuration.GetValue<string>("Database:Hostname");
+            var dbSchema = Configuration.GetValue<string>("Database:Schema");
+            var dbUser = Configuration.GetValue<string>("Database:Username");
+            var dbPassword = Configuration.GetValue<string>("Database:Password");
+            // AppDbContext is the DbContext you need to define and place it in Model folder
+            services.AddDbContext<AppDbContext>(options => options.UseMySql($"server={dbHost};database={dbSchema};user={dbUser};password={dbPassword}"));
+            // Register identity service
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                    .AddEntityFrameworkStores<AppDbContext>();
             services.AddControllersWithViews();
         }
 
@@ -39,11 +53,13 @@ namespace GunplaOnlineShop
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseAuthentication();
 
+            app.UseRouting();
+            // register the authorization in the request pipeline
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
