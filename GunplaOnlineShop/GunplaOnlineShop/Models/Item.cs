@@ -22,11 +22,16 @@ namespace GunplaOnlineShop.Models
         [MaxLength(510)]
         [StringLength(500)]
         public string Description { get; set; }
-        public string Photo { get; set; }
         [Required]
         [Range(0, int.MaxValue)]
         public int Qantity { get; set; }
+        [Range(0, 5)]
+        [Column(TypeName = "decimal(3, 2)")]
+        public decimal AverageRating { get; set; }
 
+
+        public ICollection<Photo> Photos { get; set; }
         public ICollection<Review> Reviews { get; set; }
+        public ICollection<Category> Categories { get; set; }
     }
 }

@@ -23,7 +23,8 @@ namespace GunplaOnlineShop
             {
                 var context = scope.ServiceProvider.GetService<AppDbContext>();
                 var userManager = scope.ServiceProvider.GetService<UserManager<ApplicationUser>>();
-                var seeder = new SeedData(context, userManager);
+                var configuration = scope.ServiceProvider.GetService<IConfiguration>();
+                var seeder = new SeedData(context, userManager, configuration);
                 await seeder.Run();
             }
 

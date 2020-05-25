@@ -17,11 +17,13 @@ namespace GunplaOnlineShop.Data
         }
 
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<ItemCategory> ItemCategories { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; } 
         public DbSet<Review> Reviews { get; set; }
         public DbSet<MailingAddress> MailingAddresses { get; set; }
-
+        public DbSet<Photo> Photos { get; set; }
 
         // define relationships in OnModelCreating() using fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,8 +32,12 @@ namespace GunplaOnlineShop.Data
             // need to call `base.OnModelCreating(modelBuilder)`
             base.OnModelCreating(modelBuilder);
 
+            // composite keys can only configure here using Fluent API
             modelBuilder.Entity<OrderItem>()
                 .HasKey(oi => new { oi.OrderId, oi.ItemId });
+
+            modelBuilder.Entity<ItemCategory>()
+                .HasKey(ic => new { ic.ItemId, ic.CateogoryId });
             // use Flutent API to configure relationships
             //modelBuilder.Entity<User>()    // One-To-Many
             //    .HasMany(u => u.Reservations)

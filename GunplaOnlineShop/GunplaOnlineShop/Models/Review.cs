@@ -16,12 +16,12 @@ namespace GunplaOnlineShop.Models
         [Required]
         [Range(0,5)]
         public int Rating { get; set; }
-        public string Photo { get; set; }
 
         [Required]
         public int ItemId { get; set; }
         public Item Item { get; set; }
         [ForeignKey("UserId")]
         public ApplicationUser ApplicationUser { get; set; }
+        public ICollection<Photo> Photos { get; set; }
     }
 }
