@@ -28,11 +28,12 @@ namespace GunplaOnlineShop.Models
         [Range(0, 5)]
         [Column(TypeName = "decimal(3, 2)")]
         public decimal AverageRating { get; set; }
-        public int ItemTotalSales { get; set; }
+        [Range(0,int.MaxValue)]
+        public int TotalSales { get; set; }
         [DataType(DataType.DateTime)]
-        public DateTime ItemReleaseDate { get; set; }
+        public DateTime ReleaseDate { get; set; }
         [Required]
-        public bool ItemIsAvailable { get; set; }
+        public bool IsAvailable { get; set; }
 
 
         public ICollection<Photo> Photos { get; set; }
