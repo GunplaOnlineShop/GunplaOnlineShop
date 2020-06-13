@@ -37,6 +37,14 @@ namespace GunplaOnlineShop
             // Register identity service
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppDbContext>();
+            //config password complexity
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 10;
+            });
+
             services.AddControllersWithViews();
         }
 
