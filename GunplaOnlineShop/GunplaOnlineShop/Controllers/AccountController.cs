@@ -16,28 +16,28 @@ namespace GunplaOnlineShop.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly SignInManager<ApplicationUser> signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
         public AccountController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
         }
 
-        // GET: /<controller>/
+        // GET: /Account/Register
+        [HttpPost]
+        public async Task<IActionResult> logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("index", "home");
+        }
+
         [HttpGet]
         public IActionResult Register()
         {
             return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> logout()
-        {
-            await signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
         }
 
         [HttpPost]
@@ -46,12 +46,12 @@ namespace GunplaOnlineShop.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await userManager.CreateAsync(user, model.Password);
+                var result = await _userManager.CreateAsync(user, model.Password);
 
                 if (result.Succeeded)
                 {
-                    await signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("index", "home");
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
@@ -76,15 +76,15 @@ namespace GunplaOnlineShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("index", "home");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty,"Failed to Login");
+                    ModelState.AddModelError(string.Empty,"Invalid Login Attempt");
                 }
             }
             return View(model);
