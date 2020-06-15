@@ -31,7 +31,7 @@ namespace GunplaOnlineShop.Controllers
         public async Task<IActionResult> logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("index", "home");
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
