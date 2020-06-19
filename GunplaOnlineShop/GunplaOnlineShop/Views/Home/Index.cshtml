@@ -1,8 +1,233 @@
 ﻿@{
-    ViewData["Title"] = "HobbyStation Gunpla Shop";
+    ViewData["Title"] = "WhiteBase Gunpla Shop";
 }
 
-<div class="text-center">
-    <h1 class="display-4">@ViewData["Title"]</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<style>
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    hr {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    .carousel-item-next,
+    .carousel-item-prev,
+    .carousel-item.active {
+        display: block;
+    }
+</style>
+<header>
+    <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+            <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+        </ol>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="~/images/carouselslides/banner1.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-dark">First slide label</h5>
+                    <p class="text-dark">Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/carouselslides/banner2.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-dark">Second slide label</h5>
+                    <p class="text-dark">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <img src="~/images/carouselslides/banner3.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h5 class="text-dark">Third slide label</h5>
+                    <p class="text-dark">Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </div>
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</header>
+<hr class="featurette-divider">
+<div class="container">
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm col-lg">
+            <h3 class="text-left"> HIGH GRADE</h3>
+        </div>
+        <div class="col-sm col-lg text-right">
+            <a class="text-primary" asp-controller="home" asp-action="index"> <u>For more high grade kits</u></a>
+        </div>
+    </div>
+    <div class="card-deck">
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/hg-rx-78-02-origin.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
+                    <p class="card-text">$32</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/hg-rx-78-02-origin.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
+                    <p class="card-text">$32</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/hg-rx-78-02-origin.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
+                    <p class="card-text">$32</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/hg-rx-78-02-origin.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
+                    <p class="card-text">$32</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<hr class="featurette-divider">
+<div class="container">
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm col-lg">
+            <h3 class="text-left"> MASTER GRADE</h3>
+        </div>
+        <div class="col-sm col-lg text-right">
+            <a class="text-primary" asp-controller="home" asp-action="index"> <u>For more master grade kits</u></a>
+        </div>
+    </div>
+    <div class="card-deck">
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
+                    <p class="card-text">$65</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
+                    <p class="card-text">$65</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
+                    <p class="card-text">$65</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
+                    <p class="card-text">$65</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+<hr class="featurette-divider">
+<div class="container">
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm col-lg">
+            <h3 class="text-left"> PERFECT GRADE </h3>
+        </div>
+        <div class="col-sm col-lg text-right">
+            <a class="text-primary" asp-controller="home" asp-action="index"> <u>For more perfect grade kits</u></a>
+        </div>
+    </div>
+    <div class="card-deck">
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
+                    <p class="card-text">$140</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
+                    <p class="card-text">$140</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
+                    <p class="card-text">$140</p>
+                </div>
+            </a>
+        </div>
+        <div class="card mb-1 border-0">
+            <a asp-controller="" asp-action="">
+                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
+            </a>
+            <a asp-controller="" asp-action="">
+                <div class="card-body">
+                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
+                    <p class="card-text">$140</p>
+                </div>
+            </a>
+        </div>
+    </div>
 </div>
