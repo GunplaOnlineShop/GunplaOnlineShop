@@ -1,0 +1,68 @@
+﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> signInManager
+
+@*
+    Top navigation bar component partial view
+*@
+
+<nav class="navbar navbar-static-top navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" asp-action="Index" asp-controller="Home">Home</a>
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse " id="navbarResponsive">
+            <ul class="navbar-nav ml-auto text-center">
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="" asp-action="">HIGH GRADE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="" asp-action="">REAL GRADE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="" asp-action="">MASTER GRADE</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="" asp-action="">PERFECT GRADE</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOtherGundam" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        OTHER GUNDAM SERIES
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownOtherGundam">
+                        <a class="dropdown-item" asp-action="" asp-controller="">ENTRY GRADE</a>
+                        <a class="dropdown-item" asp-action="" asp-controller="">RE/100</a>
+                        <a class="dropdown-item" asp-action="" asp-controller="">HIRM High-Resolution Model</a>
+                        <a class="dropdown-item" asp-action="" asp-controller="">SD Super Deformed</a>
+                    </div>
+                </li>
+            </ul>
+            <ul class="navbar-nav ml-auto">
+                @if (signInManager.IsSignedIn(User))
+                {
+                    <li class="nav-item ml-auto">
+                        <form method="post" asp-controller="Account" asp-action="Logout">
+                            <button type="submit" class="nav-link btn btn-link">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-item" asp-controller="Account" asp-action="Profile">
+                            @User.Identity.Name
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Register">SignUp</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Login">SignIn</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>
