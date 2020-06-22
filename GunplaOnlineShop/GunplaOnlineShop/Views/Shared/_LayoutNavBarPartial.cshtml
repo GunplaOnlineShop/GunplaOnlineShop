@@ -1,11 +1,38 @@
 ﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> signInManager
 
-@*
-    Top navigation bar component partial view
-*@
+<style>
+    .navbar-custom {
+        background-color: #282828;
+        font-family: 'Krona One', sans-serif;
+        font-size: 7pt;
+    }
 
-<nav class="navbar navbar-static-top navbar-expand-lg navbar-dark navbar-custom">
-    <div class="container">
+    a.navbar-brand {
+        white-space: normal;
+        text-align: center;
+        word-break: break-all;
+    }
+
+    /* Provide sufficient contrast against white background */
+    a {
+      color: #0366d6;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background-color: #1b6ec2;
+      border-color: #1861ac;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+      color: #fff;
+      background-color: #1b6ec2;
+      border-color: #1861ac;
+    }
+</style>
+
+<nav class="navbar navbar-static-top navbar-expand-xl navbar-dark navbar-custom">
+    <div class="container-fluid" style="width:80%">
         <a class="navbar-brand" asp-action="Index" asp-controller="Home">WHITE BASE</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
