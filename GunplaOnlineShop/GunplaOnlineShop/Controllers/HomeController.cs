@@ -6,16 +6,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using GunplaOnlineShop.Models;
+using GunplaOnlineShop.Data;
+using System.Runtime.CompilerServices;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GunplaOnlineShop.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly AppDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, AppDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         public IActionResult Index()
@@ -28,6 +33,14 @@ namespace GunplaOnlineShop.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult DisplayByCategory(string id) 
+        {
+            var items = _context.Items
+                .Where(b => b.Categories
+                .Any(s => s.Name.Equals(id)));
+            return View(items);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
