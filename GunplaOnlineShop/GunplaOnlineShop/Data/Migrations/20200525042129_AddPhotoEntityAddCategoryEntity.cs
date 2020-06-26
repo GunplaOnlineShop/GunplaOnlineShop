@@ -82,12 +82,11 @@ namespace GunplaOnlineShop.Data.Migrations
                 columns: table => new
                 {
                     ItemId = table.Column<int>(nullable: false),
-                    CateogoryId = table.Column<int>(nullable: false),
-                    CategoryId = table.Column<int>(nullable: true)
+                    CategoryId = table.Column<int>(nullable: false),
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ItemCategories", x => new { x.ItemId, x.CateogoryId });
+                    table.PrimaryKey("PK_ItemCategories", x => new { x.ItemId, x.CategoryId });
                     table.ForeignKey(
                         name: "FK_ItemCategories_Categories_CategoryId",
                         column: x => x.CategoryId,

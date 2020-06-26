@@ -37,7 +37,7 @@ namespace GunplaOnlineShop.Data
                 .HasKey(oi => new { oi.OrderId, oi.ItemId });
 
             modelBuilder.Entity<ItemCategory>()
-                .HasKey(ic => new { ic.ItemId, ic.CateogoryId });
+                .HasKey(ic => new { ic.ItemId, ic.CategoryId });
             // use Flutent API to configure relationships
             //modelBuilder.Entity<User>()    // One-To-Many
             //    .HasMany(u => u.Reservations)

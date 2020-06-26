@@ -153,13 +153,10 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CateogoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemId", "CateogoryId");
+                    b.HasKey("ItemId", "CategoryId");
 
                     b.HasIndex("CategoryId");
 
@@ -476,7 +473,9 @@ namespace GunplaOnlineShop.Data.Migrations
                 {
                     b.HasOne("GunplaOnlineShop.Models.Category", "Category")
                         .WithMany("ItemCategories")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GunplaOnlineShop.Models.Item", "Item")
                         .WithMany("ItemCategories")
