@@ -38,6 +38,6 @@ namespace GunplaOnlineShop.Models
 
         public ICollection<Photo> Photos { get; set; }
         public ICollection<Review> Reviews { get; set; }
-        public ICollection<Category> Categories { get; set; }
+        public ICollection<ItemCategory> ItemCategories { get; set; }
     }
 }

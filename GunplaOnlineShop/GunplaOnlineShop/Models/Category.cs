@@ -17,5 +17,7 @@ namespace GunplaOnlineShop.Models
         public int? ParentCategoryId { get; set; }  // nullable foreign key --> not all category has parent category
         [ForeignKey("ParentCategoryId")]
         public Category ParentCategory { get; set; }
+
+        public ICollection<ItemCategory> ItemCategories { get; set; }
     }
 }

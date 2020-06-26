@@ -36,10 +36,8 @@ namespace GunplaOnlineShop.Controllers
         [HttpGet]
         public IActionResult DisplayByCategory(string id) 
         {
-            var items = _context.Items
-                .Where(b => b.Categories
-                .Any(s => s.Name.Equals(id)));
-            return View(items);
+           
+            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
