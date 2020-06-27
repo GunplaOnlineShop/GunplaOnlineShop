@@ -30,8 +30,6 @@ namespace GunplaOnlineShop.Data
 
         private void SeedCategories()
         {
-            if (_dbContext.Categories.Any()) return;
-
             Category[] categories =
             {
                 new Category
@@ -68,7 +66,10 @@ namespace GunplaOnlineShop.Data
 
             foreach (Category category in categories)
             {
-                _dbContext.Categories.Add(category);
+                if (!_dbContext.Categories.Any(c => c.Name == category.Name))
+                {
+                    _dbContext.Categories.Add(category);
+                }
             }
 
             _dbContext.SaveChanges();
@@ -76,8 +77,6 @@ namespace GunplaOnlineShop.Data
 
         private void SeedItems()
         {
-            if (_dbContext.Items.Any()) return;
-
             Item[] items =
             {
                 new Item
@@ -248,13 +247,14 @@ namespace GunplaOnlineShop.Data
                         }
                     }
                 },
-
-
             };
 
             foreach(Item item in items)
             {
-                _dbContext.Items.Add(item);
+                if (!_dbContext.Items.Any(c => c.Name == item.Name))
+                {
+                    _dbContext.Items.Add(item);
+                }
             }
 
             _dbContext.SaveChanges();
