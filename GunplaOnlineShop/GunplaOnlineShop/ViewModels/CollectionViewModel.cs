@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,16 +10,27 @@ namespace GunplaOnlineShop.ViewModels
 {
     public class CollectionViewModel
     {
-        public List<Item> Items { get; set; }
-
-        public string SelectedOrder { get; set; }
-
-        public List<SelectListItem> SortingOrder { get; } = new List<SelectListItem>
+        public enum SortOrder
         {
-            new SelectListItem {Value = "name",Text = "Name,A-Z" },
-            new SelectListItem {Value = "name_dec",Text = "Name,Z-A" },
-            new SelectListItem {Value = "price",Text = "Price,Low to High" },
-            new SelectListItem {Value = "price_dec",Text = "Price,High to Low" },
-        };
+            [Display(Name = "Alphabetically, A-Z")]
+            NameAscending,
+            [Display(Name = "Alphabetically, Z-A")]
+            NameDescending,
+            [Display(Name = "Price, low to high")]
+            PriceAscending,
+            [Display(Name = "Price, high to low")]
+            PriceDescending,
+            [Display(Name = "Best selling")]
+            BestSelling,
+            Rating,
+            [Display(Name = "Release Date, old to new")]
+            ReleaseDateAscending,
+            [Display(Name = "Release Date, new to old")]
+            ReleaseDateDescending
+        }
+        public List<Item> Items { get; set; }
+        public SortOrder SelectedOrder { get; set; }
+        public string Grade { get; set; }
+        public string Series { get; set; }
     }
 }

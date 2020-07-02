@@ -10,8 +10,7 @@ using GunplaOnlineShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
-
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using static GunplaOnlineShop.ViewModels.CollectionViewModel;
 
 namespace GunplaOnlineShop.Controllers
 {
@@ -24,55 +23,63 @@ namespace GunplaOnlineShop.Controllers
             _context = context;
 
         }
+
         // GET: /<controller>/
         public IActionResult Index()
         {
+            // show all collection list
             return View();
         }
 
-        public IActionResult Sorting(CollectionViewModel collectionViewModel)
+        [Route("{controller}/{grade}/{series?}")]
+        public async Task<IActionResult> ByCategoryAsync(string grade, string series, SortOrder selectedOrder)
         {
-   
-            switch (collectionViewModel.SelectedOrder)
+            var items = _context.Items
+                .AsNoTracking()
+                .Include(i => i.ItemCategories)
+                 .ThenInclude(ic => ic.Category)
+                .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == grade));
+
+            if (!string.IsNullOrEmpty(series))
             {
-                case "name":
-                    var a = collectionViewModel.Items.OrderBy(s => s.Name).ToList();
-                    collectionViewModel.Items = a;
+                items = items.Where(b => b.ItemCategories.Any(c => c.Category.Name == series));
+            }
+
+            switch (selectedOrder)
+            {
+                case SortOrder.NameAscending:
+                    items = items.OrderBy(i => i.Name);
                     break;
-                case "name_dec":
-                    var b = collectionViewModel.Items.OrderByDescending(s => s.Name).ToList();
-                    collectionViewModel.Items = b;
+                case SortOrder.NameDescending:
+                    items = items.OrderByDescending(i => i.Name);
                     break;
-                case "price":
-                    var c = collectionViewModel.Items.OrderBy(s => s.Price).ToList();
-                    collectionViewModel.Items = c;
+                case SortOrder.PriceAscending:
+                    items = items.OrderBy(i => i.Price);
                     break;
-                case "price_dec":
-                    var d = collectionViewModel.Items.OrderByDescending(s => s.Price).ToList();
-                    collectionViewModel.Items = d;
+                case SortOrder.PriceDescending:
+                    items = items.OrderByDescending(i => i.Price);
+                    break;
+                case SortOrder.Rating:
+                    items = items.OrderByDescending(i => i.AverageRating);
+                    break;
+                case SortOrder.BestSelling:
+                    break;
+                case SortOrder.ReleaseDateAscending:
+                    items = items.OrderBy(i => i.ReleaseDate);
+                    break;
+                case SortOrder.ReleaseDateDescending:
+                    items = items.OrderByDescending(i => i.ReleaseDate);
                     break;
 
             }
-            return View(collectionViewModel);
-        }
-        
 
-
-        [HttpGet]
-        [Route("{controller}/{action}/{grade}")]
-        public IActionResult ByCategory(string grade)
-        {
-            ViewBag.Grade = grade;
-            var items = _context.Items
-                .AsNoTracking()
-                .Include(b => b.ItemCategories)
-                .ThenInclude(c => c.Category)
-                .Where(b => b.ItemCategories.Any(c => c.Category.Name == grade))
-                .OrderBy(x => x.Name)
-                .ToList();
-
-            var model = new CollectionViewModel();
-            model.Items = items;
+            var model = new CollectionViewModel()
+            {
+                SelectedOrder = selectedOrder,
+                Items = await items.ToListAsync(),
+                Grade = grade,
+                Series = series
+            };
             return View(model);
         }
 

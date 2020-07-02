@@ -58,7 +58,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-light">
                     <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">@ViewBag.Grade</li>
+                    <li class="breadcrumb-item active" aria-current="page"></li>
                 </ol>
             </nav>
         </div>
@@ -73,11 +73,10 @@
         </div>
         <div class="col-10">
             <div class="row d-flex flex-row-reverse mb-3 ml-3" >
-                <form asp-controller="Collection" asp-action="Sorting" method="post" >
+                <form method="get" >
                     <div class="form-inline row">
                         <label>Sort By</label>
-                        <select asp-for="SelectedOrder" asp-items="Model.SortingOrder">
-                        </select>
+                        <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<CollectionViewModel.SortOrder>()" onchange="this.form.submit()" class="form-control"></select>
                     </div>
                 </form>
             </div>
