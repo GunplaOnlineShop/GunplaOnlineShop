@@ -9,6 +9,7 @@ using GunplaOnlineShop.Models;
 using GunplaOnlineShop.Data;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 
 namespace GunplaOnlineShop.Controllers
 {
@@ -30,13 +31,6 @@ namespace GunplaOnlineShop.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult DisplayByCategory(string id) 
-        {
-           
             return View();
         }
 
