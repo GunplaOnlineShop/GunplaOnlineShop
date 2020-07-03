@@ -37,6 +37,10 @@ namespace GunplaOnlineShop.Controllers
                  .ThenInclude(ic => ic.Category)
                 .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == grade));
 
+            var itemSeries = _context.Categories
+                .AsNoTracking()
+                .Where(b => b.ParentCategory.Name == grade);
+
             if (!string.IsNullOrEmpty(series))
             {
                 items = items.Where(b => b.ItemCategories.Any(c => c.Category.Name == series));
@@ -67,13 +71,13 @@ namespace GunplaOnlineShop.Controllers
                 case SortOrder.ReleaseDateDescending:
                     items = items.OrderByDescending(i => i.ReleaseDate);
                     break;
-
             }
 
             var model = new CollectionViewModel()
             {
                 SelectedOrder = selectedOrder,
                 Items = await items.ToListAsync(),
+                Categories = await itemSeries.ToListAsync(),
                 Grade = grade,
                 Series = series
             };

@@ -29,6 +29,7 @@ namespace GunplaOnlineShop.ViewModels
             ReleaseDateDescending
         }
         public List<Item> Items { get; set; }
+        public List<Category> Categories { get; set; }
         public SortOrder SelectedOrder { get; set; }
         public string Grade { get; set; }
         public string Series { get; set; }

@@ -67,9 +67,12 @@
     <div class="row">
         <div class="col-2">
             <div class="col-12"><h5>Shop By</h5></div>
-            <div class="col-12">Gundam Seed</div>
-            <div class="col-12">Gundam ZZ</div>
-            <div class="col-12">Gundam 00</div>
+            @foreach (var series in Model.Categories)
+            {
+                <a asp-controller="Collection" asp-action="ByCategory" asp-route-series=@series.Name >
+                    <div class="col-12">@series.Name</div>
+                </a>
+            }
         </div>
         <div class="col-10">
             <div class="row d-flex flex-row-reverse mb-3 ml-3" >

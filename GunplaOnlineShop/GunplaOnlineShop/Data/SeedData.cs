@@ -39,29 +39,59 @@ namespace GunplaOnlineShop.Data
                 },
                 new Category
                 {
+                    Id = 11,
                     Name = "High Grade",
                     ParentCategoryId = 1
                 },
                 new Category
                 {
+                    Id =12,
                     Name = "Master Grade",
                     ParentCategoryId = 1
                 },
                 new Category
                 {
+                    Id = 13,
                     Name = "Perfect Grade",
                     ParentCategoryId = 1
                 },
                 new Category
                 {
+                    Id = 14,
                     Name = "HIRM Hi-Resolution",
                     ParentCategoryId = 1
                 },
                 new Category
                 {
+                    Id = 15,
                     Name = "SD Super Deformed",
                     ParentCategoryId = 1
                 },
+                new Category
+                {
+                    Id = 110,
+                    Name = "HG UC",
+                    ParentCategoryId = 11
+                },
+                new Category
+                {
+                    Id = 111,
+                    Name = "HG GTO",
+                    ParentCategoryId = 11
+                },
+                new Category
+                {
+                    Id = 112,
+                    Name = "HG SEED",
+                    ParentCategoryId = 11
+                },
+                new Category
+                {
+                    Id = 113,
+                    Name = "HG Hathaway",
+                    ParentCategoryId = 11
+                },
+
             };
 
             foreach (Category category in categories)
@@ -90,6 +120,10 @@ namespace GunplaOnlineShop.Data
                         new ItemCategory
                         {
                             Category = _dbContext.Categories.Where(c => c.Name.Equals("High Grade")).FirstOrDefault()
+                        },
+                        new ItemCategory
+                        {
+                            Category = _dbContext.Categories.Where(c => c.Name.Equals("HG UC")).FirstOrDefault()
                         }
                     }
                 },
@@ -104,6 +138,10 @@ namespace GunplaOnlineShop.Data
                         new ItemCategory
                         {
                             Category = _dbContext.Categories.Where(c => c.Name.Equals("High Grade")).FirstOrDefault()
+                        },
+                        new ItemCategory
+                        {
+                            Category = _dbContext.Categories.Where(c => c.Name.Equals("HG GTO")).FirstOrDefault()
                         }
                     }
                 },
@@ -115,10 +153,16 @@ namespace GunplaOnlineShop.Data
                     Qantity = 10,
                     ItemCategories = new List<ItemCategory>
                     {
+                        
                         new ItemCategory
                         {
                             Category = _dbContext.Categories.Where(c => c.Name.Equals("High Grade")).FirstOrDefault()
-                        }
+                        },
+                        new ItemCategory
+                        {
+                            Category = _dbContext.Categories.Where(c => c.Name.Equals("HG SEED")).FirstOrDefault()
+                        },
+
                     }
                 },
                 new Item
@@ -129,9 +173,14 @@ namespace GunplaOnlineShop.Data
                     Qantity = 10,
                     ItemCategories = new List<ItemCategory>
                     {
+                        
                         new ItemCategory
                         {
                             Category = _dbContext.Categories.Where(c => c.Name.Equals("High Grade")).FirstOrDefault()
+                        },
+                        new ItemCategory
+                        {
+                            Category = _dbContext.Categories.Where(c => c.Name.Equals("HG Hathaway")).FirstOrDefault()
                         }
                     }
                 },
