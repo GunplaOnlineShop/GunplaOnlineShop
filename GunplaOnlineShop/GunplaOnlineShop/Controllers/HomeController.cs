@@ -13,15 +13,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GunplaOnlineShop.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly AppDbContext _context;
-
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(AppDbContext context) : base(context)
         {
-            _logger = logger;
-            _context = context;
         }
 
         public IActionResult Index()

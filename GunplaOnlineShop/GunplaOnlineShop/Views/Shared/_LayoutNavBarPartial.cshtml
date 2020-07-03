@@ -39,30 +39,7 @@
         </button>
         <div class="collapse navbar-collapse " id="navbarResponsive">
             <ul class="navbar-nav ml-auto text-center">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Collection" asp-action="ByCategory"  asp-route-grade="High Grade">HIGH GRADE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Collection" asp-action="ByCategory" asp-route-grade="Real Grade">REAL GRADE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Collection" asp-action="ByCategory" asp-route-grade="Master Grade">MASTER GRADE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Collection" asp-action="ByCategory" asp-route-grade="Perfect Grade">PERFECT GRADE</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOtherGundam" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        OTHER GUNDAM SERIES
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownOtherGundam">
-                        <a class="dropdown-item" asp-controller="Collection">ENTRY GRADE</a>
-                        <a class="dropdown-item" asp-controller="Collection">RE/100</a>
-                        <a class="dropdown-item" asp-controller="Collection">HIRM High-Resolution Model</a>
-                        <a class="dropdown-item" asp-controller="Collection">SD Super Deformed</a>
-                    </div>
-                </li>
+                @Html.Raw(ViewBag.NavigationLinksHtml)
             </ul>
             <ul class="navbar-nav ml-auto">
                 @if (signInManager.IsSignedIn(User))

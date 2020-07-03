@@ -14,14 +14,11 @@ using static GunplaOnlineShop.ViewModels.CollectionViewModel;
 
 namespace GunplaOnlineShop.Controllers
 {
-    public class CollectionController : Controller
+    public class CollectionController : BaseController
     {
-        private readonly AppDbContext _context;
 
-        public CollectionController(AppDbContext context)
+        public CollectionController(AppDbContext context) : base(context)
         {
-            _context = context;
-
         }
 
         // GET: /<controller>/
