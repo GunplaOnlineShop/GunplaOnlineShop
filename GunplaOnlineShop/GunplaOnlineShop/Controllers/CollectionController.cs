@@ -29,7 +29,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [Route("{controller}/{grade}/{series?}")]
-        public async Task<IActionResult> ByCategoryAsync(string grade, string series, SortOrder selectedOrder)
+        public async Task<IActionResult> ByCategoryAsync(string grade, string series, SortOrder selectedOrder= SortOrder.BestSelling)
         {
             var items = _context.Items
                 .AsNoTracking()
@@ -82,6 +82,13 @@ namespace GunplaOnlineShop.Controllers
                 Series = series
             };
             return View(model);
+        }
+
+        [Route("{controller}/{grade}/action/{name}")]
+        public IActionResult Products(string name)
+        {
+            
+            return View();
         }
 
     }
