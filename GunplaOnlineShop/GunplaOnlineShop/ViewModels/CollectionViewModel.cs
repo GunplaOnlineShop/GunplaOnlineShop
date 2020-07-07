@@ -28,7 +28,8 @@ namespace GunplaOnlineShop.ViewModels
             [Display(Name = "Release Date, new to old")]
             ReleaseDateDescending
         }
-        public List<Item> Items { get; set; }
+        public Pagination<Item> Items { get; set; }
+        
         public List<Category> Categories { get; set; }
         public SortOrder SelectedOrder { get; set; }
         public string Grade { get; set; }

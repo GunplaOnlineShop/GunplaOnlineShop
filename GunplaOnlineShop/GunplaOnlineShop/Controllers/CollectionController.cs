@@ -29,7 +29,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [Route("{controller}/{grade}/{series?}")]
-        public async Task<IActionResult> ByCategoryAsync(string grade, string series, SortOrder selectedOrder)
+        public async Task<IActionResult> CategoryAsync(string grade, string series, SortOrder selectedOrder, int? pageNumber)
         {
             var items = _context.Items
                 .AsNoTracking()
@@ -73,14 +73,17 @@ namespace GunplaOnlineShop.Controllers
                     break;
             }
 
+            int pageSize = 2;
+
             var model = new CollectionViewModel()
             {
                 SelectedOrder = selectedOrder,
-                Items = await items.ToListAsync(),
+                Items = await Pagination<Item>.CreateAsync(items.AsNoTracking(), pageNumber ?? 1, pageSize),
                 Categories = await itemSeries.ToListAsync(),
                 Grade = grade,
                 Series = series
             };
+
             return View(model);
         }
 
