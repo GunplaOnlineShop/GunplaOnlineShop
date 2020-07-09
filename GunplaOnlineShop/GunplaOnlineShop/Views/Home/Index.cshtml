@@ -1,4 +1,5 @@
-﻿@{
+﻿@model HomeViewModel
+@{
     ViewData["Title"] = "WhiteBase Gunpla Shop";
 }
 
@@ -7,18 +8,19 @@
         color: inherit;
         text-decoration: none;
     }
+
     hr {
         margin-top: 2rem;
         margin-bottom: 2rem;
         border: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
+
     .card-deck {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         grid-gap: .5rem;
     }
-
 </style>
 
 <partial name="SliderShowPartial" />
@@ -29,57 +31,99 @@
 
     <div class="row d-flex justify-content-between">
         <div class="col-sm col-lg">
-            <h3 class="text-left"> HIGH GRADE</h3>
-        </div>
-        <div class="col-sm col-lg text-right">
-            <a class="text-primary" asp-controller="home" asp-action="index"> <u>For more high grade kits</u></a>
+            <h3 class="text-left"> Best Selling</h3>
         </div>
     </div>
     <div class="card-deck">
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/HGGTO RX-78-02 Gundam.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
-                    <p class="card-text">$32</p>
+        @foreach (var items in Model.BestSellingItems)
+        {
+            <div class="card mb-1 border-0">
+                <a asp-controller="" asp-action="">
+                    <img src="~/images/@(items.Name).jpg" class="card-img-top" asp-append-version="true" />
+                </a>
+                <div class="card-body align-items-center justify-content-center">
+                    <a asp-controller="" asp-action="">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="card-title stretched-link">@items.Name</h5>
+                            </div>
+                            <div class="col-12">
+                                <p class="card-text font-italic">$@items.Price</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container">
+
+    <hr class="featurette-divider">
+
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm col-lg">
+            <h3 class="text-left"> New Released</h3>
         </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/HGGTO RX-78-02 Gundam.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
-                    <p class="card-text">$32</p>
+    </div>
+    <div class="card-deck">
+        @foreach (var items in Model.NewItems)
+        {
+            <div class="card mb-1 border-0">
+                <a asp-controller="" asp-action="">
+                    <img src="~/images/@(items.Name).jpg" class="card-img-top" asp-append-version="true" />
+                </a>
+                <div class="card-body align-items-center justify-content-center">
+                    <a asp-controller="" asp-action="">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="card-title stretched-link">@items.Name</h5>
+                            </div>
+                            <div class="col-12">
+                                <p class="card-text font-italic">$@items.Price</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="container">
+
+    <hr class="featurette-divider">
+
+    <div class="row d-flex justify-content-between">
+        <div class="col-sm col-lg">
+            <h3 class="text-left"> HIGH GRADE</h3>
         </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/HGGTO RX-78-02 Gundam.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
-                    <p class="card-text">$32</p>
+        <div class="col-sm col-lg text-right">
+            <a class="text-primary" asp-controller="Collection" asp-action="Category" asp-route-grade="High Grade"> <u>For more high grade kits</u></a>
+        </div>
+    </div>
+    <div class="card-deck">
+        @foreach (var items in Model.HgItems)
+        {
+            <div class="card mb-1 border-0">
+                <a asp-controller="" asp-action="">
+                    <img src="~/images/@(items.Name).jpg" class="card-img-top" asp-append-version="true" />
+                </a>
+                <div class="card-body align-items-center justify-content-center">
+                    <a asp-controller="" asp-action="">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="card-title stretched-link">@items.Name</h5>
+                            </div>
+                            <div class="col-12">
+                                <p class="card-text font-italic">$@items.Price</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/HGGTO RX-78-02 Gundam.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">hg rx-78-2-orgin</h4>
-                    <p class="card-text">$32</p>
-                </div>
-            </a>
-        </div>
+            </div>
+        }
     </div>
 </div>
 <div class="container">
@@ -90,54 +134,30 @@
             <h3 class="text-left"> MASTER GRADE</h3>
         </div>
         <div class="col-sm col-lg text-right">
-            <a class="text-primary" asp-controller="home" asp-action="index"> <u>For more master grade kits</u></a>
+            <a class="text-primary" asp-controller="Collection" asp-action="Category" asp-route-grade ="Master Grade"> <u>For more master grade kits</u></a>
         </div>
     </div>
     <div class="card-deck">
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
-                    <p class="card-text">$65</p>
+        @foreach (var items in Model.MgItems)
+        {
+            <div class="card mb-1 border-0">
+                <a asp-controller="" asp-action="">
+                    <img src="~/images/@(items.Name).jpg" class="card-img-top" asp-append-version="true" />
+                </a>
+                <div class="card-body align-items-center justify-content-center">
+                    <a asp-controller="" asp-action="">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="card-title stretched-link">@items.Name</h5>
+                            </div>
+                            <div class="col-12">
+                                <p class="card-text font-italic">$@items.Price</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
-                    <p class="card-text">$65</p>
-                </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
-                    <p class="card-text">$65</p>
-                </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/MG-RX-78-2-Gundam-Ver.3.0.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">mg rx-78-2 gundam ver 3.0</h4>
-                    <p class="card-text">$65</p>
-                </div>
-            </a>
-        </div>
+            </div>
+        }
     </div>
 </div>
 <div class="container">
@@ -147,53 +167,29 @@
             <h3 class="text-left"> PERFECT GRADE </h3>
         </div>
         <div class="col-sm col-lg text-right">
-            <a class="text-primary" asp-controller="home" asp-action="index"> <u>For more perfect grade kits</u></a>
+            <a class="text-primary" asp-controller="Collection" asp-action="Category" asp-route-grade="Perfect Grade"> <u>For more perfect grade kits</u></a>
         </div>
     </div>
     <div class="card-deck">
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
-                    <p class="card-text">$140</p>
+        @foreach (var items in Model.PgItems)
+        {
+            <div class="card mb-1 border-0">
+                <a asp-controller="" asp-action="">
+                    <img src="~/images/@(items.Name).jpg" class="card-img-top" asp-append-version="true" />
+                </a>
+                <div class="card-body align-items-center justify-content-center">
+                    <a asp-controller="" asp-action="">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="card-title stretched-link">@items.Name</h5>
+                            </div>
+                            <div class="col-12">
+                                <p class="card-text font-italic">$@items.Price</p>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
-                    <p class="card-text">$140</p>
-                </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
-                    <p class="card-text">$140</p>
-                </div>
-            </a>
-        </div>
-        <div class="card mb-1 border-0">
-            <a asp-controller="" asp-action="">
-                <img src="~/images/PG-RX-78-2-packaging.jpg" class="card-img-top" asp-append-version="true" />
-            </a>
-            <a asp-controller="" asp-action="">
-                <div class="card-body">
-                    <h4 class="card-title stretched-link">pg rx-78-2 gundam</h4>
-                    <p class="card-text">$140</p>
-                </div>
-            </a>
-        </div>
+            </div>
+        }
     </div>
 </div>
