@@ -1,5 +1,4 @@
 ﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> signInManager
-
 <style>
     .navbar-custom {
         background-color: #282828;
@@ -29,6 +28,8 @@
       background-color: #1b6ec2;
       border-color: #1861ac;
     }
+
+    
 </style>
 
 <nav class="navbar navbar-static-top navbar-expand-xl navbar-dark navbar-custom">
@@ -42,6 +43,10 @@
                 @Html.Raw(ViewBag.NavigationLinksHtml)
             </ul>
             <ul class="navbar-nav ml-auto">
+                <form class="form-inline mr-4" asp-controller="Collection" asp-action="Search" method="post">
+                    <input class="form-control mr-sm-2" id="keyword" name="keyword" type="search" placeholder="Search" aria-label="Search" />
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
                 @if (signInManager.IsSignedIn(User))
                 {
                     <li class="nav-item ml-auto">
