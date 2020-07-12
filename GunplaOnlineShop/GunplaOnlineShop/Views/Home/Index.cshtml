@@ -37,13 +37,13 @@
     <div class="card-deck">
         @foreach (var item in Model.BestSellingItems)
         {
-            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.Encode(item.Name, "[^a-zA-Z0-9]", "-");
+            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
             <div class="card mb-1 border-0">
-                <a asp-controller="Collection" asp-action="Products" asp-route-grade="" asp-route-name="@urlEncodedItemName">
+                <a asp-controller="Collection" asp-action="Products" asp-route-grade="@Model.getItemCategoryName(item)" asp-route-name="@urlEncodedItemName">
                     <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
                 </a>
                 <div class="card-body align-items-center justify-content-center">
-                    <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                    <a asp-controller="Collection" asp-action="Products" asp-route-grade="@Model.getItemCategoryName(item)" asp-route-name="@urlEncodedItemName">
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="card-title stretched-link">@item.Name</h5>
@@ -71,13 +71,13 @@
     <div class="card-deck">
         @foreach (var item in Model.NewItems)
         {
-            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.Encode(item.Name, "[^a-zA-Z0-9]", "-");
+            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
             <div class="card mb-1 border-0">
-                <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                <a asp-controller="Collection" asp-action="Products" asp-route-grade="@Model.getItemCategoryName(item)" asp-route-name="@urlEncodedItemName">
                     <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
                 </a>
                 <div class="card-body align-items-center justify-content-center">
-                    <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                    <a asp-controller="Collection" asp-action="Products" asp-route-grade="@Model.getItemCategoryName(item)" asp-route-name="@urlEncodedItemName">
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="card-title stretched-link">@item.Name</h5>
@@ -108,13 +108,13 @@
     <div class="card-deck">
         @foreach (var item in Model.HgItems)
         {
-            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.Encode(item.Name, "[^a-zA-Z0-9]", "-");
+            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
             <div class="card mb-1 border-0">
-                <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                <a asp-controller="Collection" asp-action="Products" asp-route-grade="high-grade" asp-route-name="@urlEncodedItemName">
                     <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
                 </a>
                 <div class="card-body align-items-center justify-content-center">
-                    <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                    <a asp-controller="Collection" asp-action="Products" asp-route-grade="high-grade" asp-route-name="@urlEncodedItemName">
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="card-title stretched-link">@item.Name</h5>
@@ -143,13 +143,13 @@
     <div class="card-deck">
         @foreach (var item in Model.MgItems)
         {
-            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.Encode(item.Name, "[^a-zA-Z0-9]", "-");
+            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
             <div class="card mb-1 border-0">
-                <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                <a asp-controller="Collection" asp-action="Products" asp-route-grade="master-grade" asp-route-name="@urlEncodedItemName">
                     <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
                 </a>
                 <div class="card-body align-items-center justify-content-center">
-                    <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                    <a asp-controller="Collection" asp-action="Products" asp-route-grade="master-grade" asp-route-name="@urlEncodedItemName">
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="card-title stretched-link">@item.Name</h5>
@@ -177,13 +177,13 @@
     <div class="card-deck">
         @foreach (var item in Model.PgItems)
         {
-            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.Encode(item.Name, "[^a-zA-Z0-9]", "-");
+            var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
             <div class="card mb-1 border-0">
-                <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                <a asp-controller="Collection" asp-action="Products" asp-route-grade="perfect-grade" asp-route-name="@urlEncodedItemName">
                     <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
                 </a>
                 <div class="card-body align-items-center justify-content-center">
-                    <a asp-controller="Collection" asp-action="Products" asp-route-name="@urlEncodedItemName">
+                    <a asp-controller="Collection" asp-action="Products" asp-route-grade="perfect-grade" asp-route-name="@urlEncodedItemName">
                         <div class="row">
                             <div class="col-12">
                                 <h5 class="card-title stretched-link">@item.Name</h5>

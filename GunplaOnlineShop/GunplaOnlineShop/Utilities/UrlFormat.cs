@@ -9,9 +9,19 @@ namespace GunplaOnlineShop.Utilities
     public static class UrlFormat
     {
         // replace all white space with dash
-        public static string Encode(this string s, string pattern, string replace)
+        public static string NameEncode(this string s)
         {
-            return Regex.Replace(s.Trim().ToLower(), pattern, replace);
+            return Regex.Replace(s.Trim().ToLower(), "[^a-zA-Z0-9]+", "-").TrimStartEncodedDash().TrimEndEncodedDash();
+        }
+
+        private static string TrimStartEncodedDash(this string s)
+        {
+            return Regex.Replace(s, "^[-]+", "");
+        }
+
+        private static string TrimEndEncodedDash(this string s)
+        {
+            return Regex.Replace(s, "[-]+$", "");
         }
     }
 }

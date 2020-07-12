@@ -28,9 +28,18 @@ namespace GunplaOnlineShop.ViewModels
             [Display(Name = "Release Date, new to old")]
             ReleaseDateDescending
         }
+        public string GradeName { get; set; }
+        public string SeriesName { get; set; }
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 2;
+
         public Pagination<Item> Items { get; set; }
-        
-        public List<Category> Categories { get; set; }
-        public SortOrder SelectedOrder { get; set; }
+        public List<Category> SeriesCategories { get; set; }
+        public SortOrder SelectedOrder { get; set; } = SortOrder.BestSelling;
+
+        public async Task PaginateItems(IQueryable<Item> items)
+        {
+            Items = await Pagination<Item>.CreateAsync(items, PageNumber, PageSize);
+        }
     }
 }

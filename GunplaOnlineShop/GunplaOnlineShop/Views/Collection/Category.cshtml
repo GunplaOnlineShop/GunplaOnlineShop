@@ -1,6 +1,6 @@
 ﻿@model GunplaOnlineShop.ViewModels.CollectionViewModel
 @{
-    ViewData["title"] = "Shopping By Grade";
+    ViewData["title"] = string.IsNullOrEmpty(Model.SeriesName) ? $"{Model.GradeName} - WhiteBase Gunpla Shop" : $"{Model.GradeName} - Tagged \"{Model.SeriesName}\" - WhiteBase Gunpla Shop";
 }
 <style>
 
@@ -67,9 +67,9 @@
     <div class="row">
         <div class="col-2">
             <div class="col-12"><h5>Shop By</h5></div>
-            @foreach (var series in Model.Categories)
+            @foreach (var series in Model.SeriesCategories)
             {
-                <a asp-route-series=@GunplaOnlineShop.Utilities.UrlFormat.Encode(series.Name, "[^a-zA-Z0-9]", "-") >
+                <a asp-route-series=@GunplaOnlineShop.Utilities.UrlFormat.NameEncode(series.Name) >
                     <div class="col-12">@series.Name</div>
                 </a>
             }
@@ -87,7 +87,7 @@
                 <div class="card-deck">
                     @foreach (var item in Model.Items)
                     {
-                        var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.Encode(item.Name, "[^a-zA-Z0-9]", "-");
+                        var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
                         <div class="card mt-1 mb-1 ml-1 mr-1 border-0">
                             <a asp-action="Products" asp-route-name="@urlEncodedItemName">
                                 <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
@@ -118,7 +118,7 @@
                         @if (Model.Items.HasPreviousPage)
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-route-pageNumber="@(Model.Items.PageIndex - 1)">
+                                <a class="page-link" asp-route-PageNumber="@(Model.Items.PageIndex - 1)">
                                     Previous
                                 </a>
                             </li>
@@ -135,13 +135,13 @@
                         @foreach (int numPage in Enumerable.Range(1, Model.Items.TotalPages))
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-route-pageNumber="@numPage">@numPage</a>
+                                <a class="page-link" asp-route-PageNumber="@numPage">@numPage</a>
                             </li>
                         }
                         @if (Model.Items.HasNextPage)
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-route-pageNumber="@(Model.Items.PageIndex + 1)">
+                                <a class="page-link" asp-route-PageNumber="@(Model.Items.PageIndex + 1)">
                                     Next
                                 </a>
                             </li>
