@@ -32,7 +32,5 @@ namespace GunplaOnlineShop.ViewModels
         
         public List<Category> Categories { get; set; }
         public SortOrder SelectedOrder { get; set; }
-        public string Grade { get; set; }
-        public string Series { get; set; }
     }
 }
