@@ -1,6 +1,6 @@
 ﻿@model GunplaOnlineShop.ViewModels.CollectionViewModel
 @{
-    ViewData["title"] = "Shopping By Grade";
+    ViewData["title"] = string.IsNullOrEmpty(Model.SeriesName) ? $"{Model.GradeName} - WhiteBase Gunpla Shop" : $"{Model.GradeName} - Tagged \"{Model.SeriesName}\" - WhiteBase Gunpla Shop";
 }
 <style>
 
@@ -67,18 +67,18 @@
     <div class="row">
         <div class="col-2">
             <div class="col-12"><h5>Shop By</h5></div>
-            @foreach (var series in Model.Categories)
+            @foreach (var series in Model.SeriesCategories)
             {
-                <a asp-controller="Collection" asp-action="Category" asp-route-series=@series.Name >
+                <a asp-route-series=@GunplaOnlineShop.Utilities.UrlFormat.NameEncode(series.Name) >
                     <div class="col-12">@series.Name</div>
                 </a>
             }
         </div>
         <div class="col-10">
             <div class="row d-flex flex-row-reverse mb-3 ml-3" >
-                <form method="get" >
-                    <div class="form-inline row">
-                        <label>Sort By</label>
+                <form method="get" class="form-group row">
+                    <label asp-for="SelectedOrder" class="col-3 col-form-label px-0">Sort By</label>
+                    <div class="col-9 px-0">
                         <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<CollectionViewModel.SortOrder>()" onchange="this.form.submit()" class="form-control"></select>
                     </div>
                 </form>
@@ -87,12 +87,13 @@
                 <div class="card-deck">
                     @foreach (var item in Model.Items)
                     {
+                        var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
                         <div class="card mt-1 mb-1 ml-1 mr-1 border-0">
-                            <a asp-controller="" asp-action="">
+                            <a asp-action="Products" asp-route-name="@urlEncodedItemName">
                                 <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
                             </a>
                             <div class="card-body align-items-center justify-content-center">
-                                <a asp-controller="" asp-action="">
+                                <a asp-action="Products" asp-route-name="@urlEncodedItemName">
                                     <div class="row">
                                         <div class="col-12">
                                             <h5 class="card-title stretched-link">@item.Name</h5>
@@ -106,6 +107,10 @@
                         </div>
                     }
                 </div>
+                @if (!Model.Items.Any())
+                {
+                    <p class="mx-auto">Sorry, there are no products matching your search.</p>
+                }
             </div>
             <div class="row d-flex justify-content-center mt-5">
                 <nav aria-label="Page navigation">
@@ -113,7 +118,7 @@
                         @if (Model.Items.HasPreviousPage)
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-controller="Collection" asp-action="Category" asp-route-pageNumber="@(Model.Items.PageIndex - 1)">
+                                <a class="page-link" asp-route-PageNumber="@(Model.Items.PageIndex - 1)">
                                     Previous
                                 </a>
                             </li>
@@ -130,13 +135,13 @@
                         @foreach (int numPage in Enumerable.Range(1, Model.Items.TotalPages))
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-controller="Collection" asp-action="Category" asp-route-pageNumber="@numPage">@numPage</a>
+                                <a class="page-link" asp-route-PageNumber="@numPage">@numPage</a>
                             </li>
                         }
                         @if (Model.Items.HasNextPage)
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-controller="Collection" asp-action="Category" asp-route-pageNumber="@(Model.Items.PageIndex + 1)">
+                                <a class="page-link" asp-route-PageNumber="@(Model.Items.PageIndex + 1)">
                                     Next
                                 </a>
                             </li>

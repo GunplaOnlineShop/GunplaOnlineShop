@@ -4,9 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Dasync.Collections;
 using GunplaOnlineShop.Data;
 using GunplaOnlineShop.Data.Migrations;
 using GunplaOnlineShop.Models;
+using GunplaOnlineShop.Utilities;
 using GunplaOnlineShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -115,27 +117,34 @@ namespace GunplaOnlineShop.Controllers
             return View(model);
         }
 
-
-        [Route("{controller}/{action}/{grade}/{series?}")]
-        public async Task<IActionResult> CategoryAsync(string grade, string series, SortOrder selectedOrder, int? pageNumber)
+        [Route("{controller}/{grade}/{series?}")]
+        public async Task<IActionResult> Category(string grade, string series, [Bind("PageNumber,SelectedOrder")] CollectionViewModel model)
         {
-
+            var allCategories = await _context.Categories
+                .AsNoTracking()
+                .ToListAsync();
+            var gradeCategory = allCategories.Where(c => c.Name.NameEncode() == grade).FirstOrDefault();
+            if (gradeCategory == null) return NotFound();
+            model.GradeName = gradeCategory.Name;
             var items = _context.Items
                 .AsNoTracking()
                 .Include(i => i.ItemCategories)
-                .ThenInclude(ic => ic.Category)
-                .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == grade));
-            var itemSeries = _context.Categories
-                .AsNoTracking()
-                .Where(b => b.ParentCategory.Name == grade);
+                .Where(i => i.ItemCategories.Any(ic => ic.CategoryId == gradeCategory.Id));
 
 
             if (!string.IsNullOrEmpty(series))
             {
-                items = items.Where(b => b.ItemCategories.Any(c => c.Category.Name == series));
+                var seriesCategory = allCategories.Where(c => c.Name.NameEncode() == series).FirstOrDefault();
+                int seriesCategoryId = -1;
+                if (seriesCategory != null)
+                {
+                    model.SeriesName = seriesCategory.Name;
+                    seriesCategoryId = seriesCategory.Id;
+                }
+                items = items.Where(b => b.ItemCategories.Any(ic => ic.CategoryId == seriesCategoryId));
             }
 
-            switch (selectedOrder)
+            switch (model.SelectedOrder)
             {
                 case SortOrder.NameAscending:
                     items = items.OrderBy(i => i.Name);
@@ -153,6 +162,7 @@ namespace GunplaOnlineShop.Controllers
                     items = items.OrderByDescending(i => i.AverageRating);
                     break;
                 case SortOrder.BestSelling:
+                    items = items.OrderByDescending(i => i.TotalSales);
                     break;
                 case SortOrder.ReleaseDateAscending:
                     items = items.OrderBy(i => i.ReleaseDate);
@@ -162,18 +172,32 @@ namespace GunplaOnlineShop.Controllers
                     break;
             }
 
-            int pageSize = 12;
-
-            var model = new CollectionViewModel()
-            {
-                SelectedOrder = selectedOrder,
-                Items = await Pagination<Item>.CreateAsync(items.AsNoTracking(), pageNumber ?? 1, pageSize),
-                Categories = await itemSeries.ToListAsync(),
-                Grade = grade,
-                Series = series
-            };
+            await model.PaginateItems(items);
+            model.SeriesCategories = await _context.Categories
+                .AsNoTracking()
+                .Where(b => b.ParentCategory.Id == gradeCategory.Id)
+                .ToListAsync();
 
             return View(model);
+        }
+
+        [Route("{controller}/{grade}/{action}/{name}")]
+        public async Task<IActionResult> Products(string grade, string name)
+        {
+            var items = await _context.Items
+                .AsNoTracking()
+                .Select(i => new { Id = i.Id, Name = i.Name  })
+                .ToListAsync();
+            var itemInfo = items.Where(i => i.Name.NameEncode() == name).FirstOrDefault();
+            if (itemInfo == null) return NotFound();
+            var item = await _context.Items
+                .Include(i => i.ItemCategories)
+                 .ThenInclude(ic => ic.Category)
+                .Include(i => i.Photos)
+                .Include(i => i.Reviews)
+                .Where(i => i.Id == itemInfo.Id)
+                .FirstOrDefaultAsync();
+            return View(item);
         }
 
     }
