@@ -42,7 +42,6 @@ namespace GunplaOnlineShop.Controllers
             var items = _context.Items
                 .AsNoTracking()
                 .Include(i => i.ItemCategories)
-                 .ThenInclude(ic => ic.Category)
                 .Where(i => i.ItemCategories.Any(ic => ic.CategoryId == gradeCategory.Id));
 
             if (!string.IsNullOrEmpty(series))
