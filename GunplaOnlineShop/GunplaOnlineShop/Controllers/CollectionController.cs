@@ -34,8 +34,6 @@ namespace GunplaOnlineShop.Controllers
 
             if (string.IsNullOrEmpty(keyword))
             {
-
-
                 items = _context.Items
                 .AsNoTracking();
 
@@ -43,43 +41,28 @@ namespace GunplaOnlineShop.Controllers
             else
             {
                 if (!keyword.Contains(" ")) {
-                    var nameMatchItems = _context.Items
-                        .AsNoTracking()
-                        .Where(i => (i.Name.ToLower().Contains(keyword.ToLower())));
-                    var graedMatchItems = _context.Items
+                    items = _context.Items
                         .AsNoTracking()
                         .Include(i => i.ItemCategories)
-                        .ThenInclude(ic => ic.Category)
-                        .Where(i => i.ItemCategories.Any(ic => ic.Category.Name.Contains(keyword)));
-                    var descrMatchItems = _context.Items
-                        .AsNoTracking()
-                        .Where(i => (i.Description.ToLower().Contains(keyword.ToLower())));
+                        .ThenInclude(i => i.Category)
+                        .Where(i => (i.Name.ToLower().Contains(keyword.ToLower())) ||
+                                i.ItemCategories.Any(ic =>ic.Category.Name.ToLower().Contains(keyword.ToLower())) ||
+                                i.Description.ToLower().Contains(keyword.ToLower()));
 
-                    var list1 = nameMatchItems.Concat(graedMatchItems);
-                    items = list1.Concat(descrMatchItems);
-                    items = items.Distinct();
                 }
                 else
                 {
                     string[] keyList = keyword.Split(" ");
+                    items = _context.Items
+                        .AsNoTracking()
+                        .Include(i => i.ItemCategories)
+                        .ThenInclude(i => i.Category);
                     foreach (var key in keyList)
                     {
-                        var nameMatchItems = _context.Items
-                            .AsNoTracking()
-                            .Where(i => (i.Name.ToLower().Contains(key.ToLower())));
-                        var graedMatchItems = _context.Items
-                            .AsNoTracking()
-                            .Include(i => i.ItemCategories)
-                            .ThenInclude(ic => ic.Category)
-                            .Where(i => i.ItemCategories.Any(ic => ic.Category.Name.Contains(key)));
-                        var descrMatchItems = _context.Items
-                            .AsNoTracking()
-                            .Where(i => (i.Description.ToLower().Contains(key.ToLower())));
-                        var list1 = nameMatchItems.Concat(graedMatchItems);
-                        items = list1.Concat(descrMatchItems);
-
+                        items = items.Where(i => (i.Name.ToLower().Contains(key.ToLower())) ||
+                                i.ItemCategories.Any(ic => ic.Category.Name.ToLower().Contains(key.ToLower())) ||
+                                i.Description.ToLower().Contains(key.ToLower()));
                     }
-                    items = items.Distinct();
                 }
             }
 
