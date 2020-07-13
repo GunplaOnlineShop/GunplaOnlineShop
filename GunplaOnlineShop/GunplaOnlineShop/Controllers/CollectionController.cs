@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Security.Principal;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dasync.Collections;
 using GunplaOnlineShop.Data;
@@ -184,19 +185,15 @@ namespace GunplaOnlineShop.Controllers
         [Route("{controller}/{grade}/{action}/{name}")]
         public async Task<IActionResult> Products(string grade, string name)
         {
-            var items = await _context.Items
-                .AsNoTracking()
-                .Select(i => new { Id = i.Id, Name = i.Name  })
-                .ToListAsync();
-            var itemInfo = items.Where(i => i.Name.NameEncode() == name).FirstOrDefault();
-            if (itemInfo == null) return NotFound();
+            if (Regex.IsMatch("[^a-zA-Z0-9-]+", name)) return NotFound();
             var item = await _context.Items
+                .FromSqlRaw($"SELECT * FROM Items i WHERE REGEXP_REPLACE(REGEXP_REPLACE(REGEXP_REPLACE(LOWER(i.Name), '[^a-zA-Z0-9]+', '-'), '[^a-zA-Z0-9]+$', ''), '^[^a-zA-Z0-9]+', '') = '{name}'")
                 .Include(i => i.ItemCategories)
                  .ThenInclude(ic => ic.Category)
                 .Include(i => i.Photos)
                 .Include(i => i.Reviews)
-                .Where(i => i.Id == itemInfo.Id)
                 .FirstOrDefaultAsync();
+            if (item == null) return NotFound();
             return View(item);
         }
 
