@@ -2,7 +2,7 @@
 
 namespace GunplaOnlineShop.Data.Migrations
 {
-    public partial class AddDataAnnotationInItem : Migration
+    public partial class SeedingNewItems : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

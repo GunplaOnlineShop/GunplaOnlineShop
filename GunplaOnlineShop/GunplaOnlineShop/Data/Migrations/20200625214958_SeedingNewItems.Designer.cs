@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GunplaOnlineShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200528222620_AddDataAnnotationInItem")]
-    partial class AddDataAnnotationInItem
+    [Migration("20200625214958_SeedingNewItems")]
+    partial class SeedingNewItems
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -160,13 +160,13 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CateogoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.HasKey("ItemId", "CateogoryId");
+                    b.HasKey("ItemId", "CategoryId");
 
                     b.HasIndex("CategoryId");
 

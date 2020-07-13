@@ -151,13 +151,13 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CateogoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int?>("CategoryId")
                         .HasColumnType("int");
 
-                    b.HasKey("ItemId", "CateogoryId");
+                    b.HasKey("ItemId", "CategoryId");
 
                     b.HasIndex("CategoryId");
 

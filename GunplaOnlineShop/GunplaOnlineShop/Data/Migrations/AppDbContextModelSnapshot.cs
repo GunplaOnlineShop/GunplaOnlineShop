@@ -90,9 +90,6 @@ namespace GunplaOnlineShop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(25) CHARACTER SET utf8mb4")
@@ -102,8 +99,6 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("ParentCategoryId");
 
@@ -158,13 +153,10 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CateogoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("CategoryId")
-                        .HasColumnType("int");
-
-                    b.HasKey("ItemId", "CateogoryId");
+                    b.HasKey("ItemId", "CategoryId");
 
                     b.HasIndex("CategoryId");
 
@@ -465,10 +457,6 @@ namespace GunplaOnlineShop.Data.Migrations
 
             modelBuilder.Entity("GunplaOnlineShop.Models.Category", b =>
                 {
-                    b.HasOne("GunplaOnlineShop.Models.Item", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("GunplaOnlineShop.Models.Category", "ParentCategory")
                         .WithMany()
                         .HasForeignKey("ParentCategoryId");
@@ -484,11 +472,13 @@ namespace GunplaOnlineShop.Data.Migrations
             modelBuilder.Entity("GunplaOnlineShop.Models.ItemCategory", b =>
                 {
                     b.HasOne("GunplaOnlineShop.Models.Category", "Category")
-                        .WithMany()
-                        .HasForeignKey("CategoryId");
+                        .WithMany("ItemCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("GunplaOnlineShop.Models.Item", "Item")
-                        .WithMany()
+                        .WithMany("ItemCategories")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

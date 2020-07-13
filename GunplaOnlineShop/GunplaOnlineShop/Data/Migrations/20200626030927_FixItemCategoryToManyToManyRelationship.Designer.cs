@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GunplaOnlineShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20200528221711_AddPropsInItem")]
-    partial class AddPropsInItem
+    [Migration("20200626030927_FixItemCategoryToManyToManyRelationship")]
+    partial class FixItemCategoryToManyToManyRelationship
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -92,9 +92,6 @@ namespace GunplaOnlineShop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(25) CHARACTER SET utf8mb4")
@@ -104,8 +101,6 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("ParentCategoryId");
 
@@ -128,14 +123,8 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("varchar(500) CHARACTER SET utf8mb4")
                         .HasMaxLength(500);
 
-                    b.Property<bool>("ItemIsAvailable")
+                    b.Property<bool>("IsAvailable")
                         .HasColumnType("tinyint(1)");
-
-                    b.Property<DateTime>("ItemReleaseDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ItemTotalSales")
-                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -146,6 +135,12 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Qantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("TotalSales")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -467,10 +462,6 @@ namespace GunplaOnlineShop.Data.Migrations
 
             modelBuilder.Entity("GunplaOnlineShop.Models.Category", b =>
                 {
-                    b.HasOne("GunplaOnlineShop.Models.Item", null)
-                        .WithMany("Categories")
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("GunplaOnlineShop.Models.Category", "ParentCategory")
                         .WithMany()
                         .HasForeignKey("ParentCategoryId");
@@ -486,11 +477,11 @@ namespace GunplaOnlineShop.Data.Migrations
             modelBuilder.Entity("GunplaOnlineShop.Models.ItemCategory", b =>
                 {
                     b.HasOne("GunplaOnlineShop.Models.Category", "Category")
-                        .WithMany()
+                        .WithMany("ItemCategories")
                         .HasForeignKey("CategoryId");
 
                     b.HasOne("GunplaOnlineShop.Models.Item", "Item")
-                        .WithMany()
+                        .WithMany("ItemCategories")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
