@@ -20,56 +20,42 @@ namespace GunplaOnlineShop.Controllers
         {
         }
 
-        public async Task<IActionResult> Index(HomeViewModel homeViewModel)
+        public async Task<IActionResult> Index(HomeViewModel model)
         {
-            var hgItems = await _context.Items
+
+            var allItems = _context.Items
                 .AsNoTracking()
                 .Include(i => i.ItemCategories)
-                 .ThenInclude(ic => ic.Category)
+                .ThenInclude(ic => ic.Category);
+            
+            var hgItems = allItems
                 .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == "High Grade"))
                 .OrderByDescending(i => i.TotalSales)
-                .Take(4)
-                .ToListAsync();
-            var mgItems = await _context.Items
-                .AsNoTracking()
-                .Include(i => i.ItemCategories)
-                 .ThenInclude(ic => ic.Category)
+                .Take(4);
+            var mgItems = allItems
                 .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == "Master Grade"))
                 .OrderByDescending(i => i.TotalSales)
-                .Take(4)
-                .ToListAsync();
-            var pgItems = await _context.Items
-                .AsNoTracking()
-                .Include(i => i.ItemCategories)
-                 .ThenInclude(ic => ic.Category)
+                .Take(4);
+            var pgItems = allItems
                 .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == "Perfect Grade"))
                 .OrderByDescending(i => i.TotalSales)
-                .Take(4)
-                .ToListAsync();
-            var bestSellingItems = await _context.Items
-                .AsNoTracking()
-                .Include(i => i.ItemCategories)
-                 .ThenInclude(ic => ic.Category)
+                .Take(4);
+            var bestSellingItems = allItems
                 .OrderByDescending(i => i.TotalSales)
-                .Take(4)
-                .ToListAsync();
-            var newItems = await _context.Items
-                .AsNoTracking()
-                .Include(i => i.ItemCategories)
-                 .ThenInclude(ic => ic.Category)
+                .Take(4);
+            var newItems = allItems
                 .OrderByDescending(i => i.ReleaseDate)
-                .Take(4)
-                .ToListAsync();
+                .Take(4);
 
-            var model = new HomeViewModel()
-            {
-                RootCategoryIds = await _context.Categories.AsNoTracking().Where(c => c.ParentCategoryId == null).Select(c => c.Id).ToArrayAsync(),
-                HgItems = hgItems,
-                MgItems = mgItems,
-                PgItems = pgItems,
-                BestSellingItems = bestSellingItems,
-                NewItems = newItems,
-            };
+
+
+            model.RootCategoryIds = await _context.Categories.AsNoTracking().Where(c => c.ParentCategoryId == null).Select(c => c.Id).ToArrayAsync();
+            model.HgItems = await hgItems.ToListAsync();
+            model.MgItems = await mgItems.ToListAsync();
+            model.PgItems = await pgItems.ToListAsync();
+            model.BestSellingItems = await bestSellingItems.ToListAsync();
+            model.NewItems = await newItems.ToListAsync();
+
             return View(model);
         }
 

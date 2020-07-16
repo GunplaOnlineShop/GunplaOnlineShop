@@ -26,6 +26,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
         // GET: /<controller>/
+        [Route("{controller}/{action}/{keyword?}")]
         public async Task<IActionResult> SearchAsync(string keyword, SortOrder selectedOrder,int?pageNumber)
         {
             int pageSize = 12;
