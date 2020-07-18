@@ -11,6 +11,7 @@ using GunplaOnlineShop.Data.Migrations;
 using GunplaOnlineShop.Models;
 using GunplaOnlineShop.Utilities;
 using GunplaOnlineShop.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -89,6 +90,7 @@ namespace GunplaOnlineShop.Controllers
 
             return View(model);
         }
+
 
         [Route("{controller}/{grade}/{action}/{name}")]
         public async Task<IActionResult> Products(string grade, string name)
