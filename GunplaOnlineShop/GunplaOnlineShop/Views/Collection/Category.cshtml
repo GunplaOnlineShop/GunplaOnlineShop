@@ -5,7 +5,7 @@
 <style>
 
     .breadcrumb {
-        margin-bottom:0;
+        margin-bottom: 0;
     }
 
     hr {
@@ -14,6 +14,7 @@
         border: 0;
         border-top: 1px solid rgba(0, 0, 0, 0.1);
     }
+
     @@media(min-width:576px) {
         .card-deck {
             display: grid;
@@ -21,6 +22,7 @@
             grid-gap: .5rem;
         }
     }
+
     @@media(min-width:768px) {
         .card-deck {
             display: grid;
@@ -28,6 +30,7 @@
             grid-gap: .5rem;
         }
     }
+
     @@media(min-width:992px) {
         .card-deck {
             display: grid;
@@ -35,6 +38,7 @@
             grid-gap: .5rem;
         }
     }
+
     @@media(min-width:1200px) {
         .card-deck {
             display: grid;
@@ -42,16 +46,18 @@
             grid-gap: .5rem;
         }
     }
+
     .form-inline {
         display: flex;
         align-items: center;
     }
+
     label {
         margin: 1fr;
     }
 </style>
 
-    
+
 <div class="container">
     <div class="row">
         <div class="col-12  d-flex align-items-center">
@@ -69,17 +75,22 @@
             <div class="col-12"><h5>Shop By</h5></div>
             @foreach (var series in Model.SeriesCategories)
             {
-                <a asp-route-series=@GunplaOnlineShop.Utilities.UrlFormat.NameEncode(series.Name) >
+                <a asp-route-series=@GunplaOnlineShop.Utilities.UrlFormat.NameEncode(series.Name)>
                     <div class="col-12">@series.Name</div>
                 </a>
             }
         </div>
         <div class="col-10">
-            <div class="row d-flex flex-row-reverse mb-3 ml-3" >
-                <form method="get" class="form-group row">
+            <div class="row d-flex flex-row-reverse mb-3 ml-3">
+                <form id="filter" method="get" class="form-group row">
                     <label asp-for="SelectedOrder" class="col-3 col-form-label px-0">Sort By</label>
+                    @if (!string.IsNullOrEmpty(Model.q))
+                    {
+                        @Html.HiddenFor(m => m.q)
+                    }
+                    @Html.HiddenFor(m => m.PageNumber)
                     <div class="col-9 px-0">
-                        <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<CollectionViewModel.SortOrder>()" onchange="this.form.submit()" class="form-control"></select>
+                        <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<GunplaOnlineShop.QueryObjects.ItemSort.SortOrder>()" onchange="this.form.submit()" class="form-control"></select>
                     </div>
                 </form>
             </div>
@@ -135,13 +146,13 @@
                         @foreach (int numPage in Enumerable.Range(1, Model.Items.TotalPages))
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-route-PageNumber="@numPage">@numPage</a>
+                                <a class="page-link" data-page-number="@numPage">@numPage</a>
                             </li>
                         }
                         @if (Model.Items.HasNextPage)
                         {
                             <li class="page-item">
-                                <a class="page-link" asp-route-PageNumber="@(Model.Items.PageIndex + 1)">
+                                <a class="page-link" data-page-number="@(Model.Items.PageIndex + 1)">
                                     Next
                                 </a>
                             </li>
@@ -162,3 +173,16 @@
         </div>
     </div>
 </div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('[name=q]')[0].value = "@Model.q";
+        });
+        $(".page-link").click(function () {
+            pageNumber = $(this).data("page-number");
+            $("[name=PageNumber]")[0].value = pageNumber;
+            $("#filter").submit();
+        });
+    </script>
+}

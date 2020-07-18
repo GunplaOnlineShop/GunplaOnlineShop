@@ -14,6 +14,7 @@ using GunplaOnlineShop.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using static GunplaOnlineShop.QueryObjects.ItemSort;
 using static GunplaOnlineShop.ViewModels.CollectionViewModel;
 
 namespace GunplaOnlineShop.Controllers
@@ -26,80 +27,30 @@ namespace GunplaOnlineShop.Controllers
         }
 
         // GET: /<controller>/
-        [Route("{controller}/{action}/{keyword?}")]
-        public async Task<IActionResult> SearchAsync(string keyword, SortOrder selectedOrder,int?pageNumber)
+        [Route("/{action}")]
+        public async Task<IActionResult> Search([Bind("q,PageNumber,SelectedOrder")] CollectionViewModel model)
         {
-            int pageSize = 12;
-
-            var items= new List<Item>().AsQueryable();
-
-            if (string.IsNullOrEmpty(keyword))
+            model.PageSize = 50;
+            var items = _context.Items
+                .AsNoTracking()
+                .Include(i => i.ItemCategories)
+                 .ThenInclude(i => i.Category)
+                .AsQueryable();
+            if (!string.IsNullOrEmpty(model.q))
             {
-                items = _context.Items
-                .AsNoTracking();
-
-            }
-            else
-            {
-                if (!keyword.Contains(" ")) {
-                    items = _context.Items
-                        .AsNoTracking()
-                        .Include(i => i.ItemCategories)
-                        .ThenInclude(i => i.Category)
-                        .Where(i => (i.Name.ToLower().Contains(keyword.ToLower())) ||
-                                i.ItemCategories.Any(ic =>ic.Category.Name.ToLower().Contains(keyword.ToLower())) ||
-                                i.Description.ToLower().Contains(keyword.ToLower()));
-
-                }
-                else
+                string[] keywords = model.q.Trim().ToLower().Split(" ");
+                foreach (string keyword in keywords)
                 {
-                    string[] keyList = keyword.Split(" ");
-                    items = _context.Items
-                        .AsNoTracking()
-                        .Include(i => i.ItemCategories)
-                        .ThenInclude(i => i.Category);
-                    foreach (var key in keyList)
-                    {
-                        items = items.Where(i => (i.Name.ToLower().Contains(key.ToLower())) ||
-                                i.ItemCategories.Any(ic => ic.Category.Name.ToLower().Contains(key.ToLower())) ||
-                                i.Description.ToLower().Contains(key.ToLower()));
-                    }
+                    items = items.Where(i => i.Name.ToLower().Contains(keyword)
+                                          || i.ItemCategories.Any(ic => ic.Category.Name.ToLower().Contains(keyword))
+                                          || i.Description.ToLower().Contains(keyword));
                 }
             }
 
-            switch (selectedOrder)
-            {
-                case SortOrder.NameAscending:
-                    items = items.OrderBy(i => i.Name);
-                    break;
-                case SortOrder.NameDescending:
-                    items = items.OrderByDescending(i => i.Name);
-                    break;
-                case SortOrder.PriceAscending:
-                    items = items.OrderBy(i => i.Price);
-                    break;
-                case SortOrder.PriceDescending:
-                    items = items.OrderByDescending(i => i.Price);
-                    break;
-                case SortOrder.Rating:
-                    items = items.OrderByDescending(i => i.AverageRating);
-                    break;
-                case SortOrder.BestSelling:
-                    break;
-                case SortOrder.ReleaseDateAscending:
-                    items = items.OrderBy(i => i.ReleaseDate);
-                    break;
-                case SortOrder.ReleaseDateDescending:
-                    items = items.OrderByDescending(i => i.ReleaseDate);
-                    break;
-            }
+            items = items.OrderItemsBy(model.SelectedOrder);
 
-            var model = new CollectionViewModel()
-            {
-                SelectedOrder = selectedOrder,
-                Items = await Pagination<Item>.CreateAsync(items.AsNoTracking(), pageNumber ?? 1, pageSize),
-            };
-            return View(model);
+            await model.PaginateItems(items);
+            return View("Category", model);
         }
 
         [Route("{controller}/{grade}/{series?}")]
@@ -116,7 +67,6 @@ namespace GunplaOnlineShop.Controllers
                 .Include(i => i.ItemCategories)
                 .Where(i => i.ItemCategories.Any(ic => ic.CategoryId == gradeCategory.Id));
 
-
             if (!string.IsNullOrEmpty(series))
             {
                 var seriesCategory = allCategories.Where(c => c.Name.NameEncode() == series).FirstOrDefault();
@@ -129,33 +79,7 @@ namespace GunplaOnlineShop.Controllers
                 items = items.Where(b => b.ItemCategories.Any(ic => ic.CategoryId == seriesCategoryId));
             }
 
-            switch (model.SelectedOrder)
-            {
-                case SortOrder.NameAscending:
-                    items = items.OrderBy(i => i.Name);
-                    break;
-                case SortOrder.NameDescending:
-                    items = items.OrderByDescending(i => i.Name);
-                    break;
-                case SortOrder.PriceAscending:
-                    items = items.OrderBy(i => i.Price);
-                    break;
-                case SortOrder.PriceDescending:
-                    items = items.OrderByDescending(i => i.Price);
-                    break;
-                case SortOrder.Rating:
-                    items = items.OrderByDescending(i => i.AverageRating);
-                    break;
-                case SortOrder.BestSelling:
-                    items = items.OrderByDescending(i => i.TotalSales);
-                    break;
-                case SortOrder.ReleaseDateAscending:
-                    items = items.OrderBy(i => i.ReleaseDate);
-                    break;
-                case SortOrder.ReleaseDateDescending:
-                    items = items.OrderByDescending(i => i.ReleaseDate);
-                    break;
-            }
+            items = items.OrderItemsBy(model.SelectedOrder);
 
             await model.PaginateItems(items);
             model.SeriesCategories = await _context.Categories
