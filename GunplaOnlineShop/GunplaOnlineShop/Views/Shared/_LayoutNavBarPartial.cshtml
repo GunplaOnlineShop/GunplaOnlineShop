@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> signInManager
+@using GunplaOnlineShop.Utilities
 
 <style>
     .navbar-custom {
@@ -53,11 +54,25 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item d-flex align-items-center">
-                        <a class="nav-item text-white" asp-controller="Account" asp-action="Profile">
-                            @User.Identity.Name
-                        </a>
-                    </li>
+                    @if (Convert.ToBoolean(User.IsAdminCheck()))
+                    {
+
+                        <li class="nav-item d-flex align-items-center">
+                            <a class="nav-item text-white" asp-controller="Admin" asp-action="Index">
+                                @User.Identity.Name
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item d-flex align-items-center">
+                            <a class="nav-item text-white" asp-controller="Account" asp-action="Profile">
+                                @User.Identity.Name
+                            </a>
+                        </li>
+                    }
+
                 }
                 else
                 {

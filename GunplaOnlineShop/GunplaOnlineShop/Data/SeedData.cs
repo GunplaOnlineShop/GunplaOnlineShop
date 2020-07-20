@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace GunplaOnlineShop.Data
@@ -345,6 +346,8 @@ namespace GunplaOnlineShop.Data
             };
 
             await _userManager.CreateAsync(adminAccount, _configuration["AdminAccount:Password"]);
+            await _userManager.AddClaimAsync(adminAccount, new Claim("IsAdmin", adminAccount.IsAdmin.ToString(), ClaimValueTypes.Boolean));
+
         }
 
 
