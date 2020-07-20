@@ -1,0 +1,143 @@
+﻿@model GunplaOnlineShop.ViewModels.CollectionViewModel
+@{
+    ViewData["title"] = string.IsNullOrEmpty(Model.SeriesName) ? $"{Model.GradeName} - WhiteBase Gunpla Shop" : $"{Model.GradeName} - Tagged \"{Model.SeriesName}\" - WhiteBase Gunpla Shop";
+}
+<style>
+
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+
+    hr {
+        margin-top: 0rem;
+        margin-bottom: 1rem;
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    @@media(min-width:576px) {
+        .card-deck {
+            display: grid;
+            grid-template-columns: repeat(1, minmax(150px, 1fr));
+            grid-gap: .5rem;
+        }
+    }
+
+    @@media(min-width:768px) {
+        .card-deck {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(150px, 1fr));
+            grid-gap: .5rem;
+        }
+    }
+
+    @@media(min-width:992px) {
+        .card-deck {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(150px, 1fr));
+            grid-gap: .5rem;
+        }
+    }
+
+    @@media(min-width:1200px) {
+        .card-deck {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(150px, 1fr));
+            grid-gap: .5rem;
+        }
+    }
+
+    .form-inline {
+        display: flex;
+        align-items: center;
+    }
+
+    label {
+        margin: 1fr;
+    }
+</style>
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12  d-flex align-items-center">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-light">
+                    <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="breadcrumb-item active" aria-current="page"></li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <hr class="featurette-divider">
+    <div class="row">
+        <div class="col-2">
+            <div class="col-12"><h5>Shop By</h5></div>
+            @foreach (var series in Model.SeriesCategories)
+            {
+                <a asp-route-series=@GunplaOnlineShop.Utilities.UrlFormat.NameEncode(series.Name)>
+                    <div class="col-12">@series.Name</div>
+                </a>
+            }
+        </div>
+        <div class="col-10">
+            <div class="row d-flex flex-row-reverse mb-3 ml-3">
+                <form id="filter" method="get" class="form-group row">
+                    <label asp-for="SelectedOrder" class="col-3 col-form-label px-0">Sort By</label>
+                    @if (!string.IsNullOrEmpty(Model.q))
+                    {
+                        @Html.HiddenFor(m => m.q)
+                    }
+                    @Html.HiddenFor(m => m.PageNumber)
+                    <div class="col-9 px-0">
+                        <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<GunplaOnlineShop.QueryObjects.ItemSort.SortOrder>()" onchange="this.form.submit()" class="form-control"></select>
+                    </div>
+                </form>
+            </div>
+            @await Html.PartialAsync("PaginationPartial", Model.Items)
+            <div class="row mt-5">
+                <div class="card-deck">
+                    @foreach (var item in Model.Items)
+                    {
+                        var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
+                        <div class="card mt-1 mb-1 ml-1 mr-1 border-0">
+                            <a asp-action="Products" asp-route-name="@urlEncodedItemName">
+                                <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
+                            </a>
+                            <div class="card-body align-items-center justify-content-center">
+                                <a asp-action="Products" asp-route-name="@urlEncodedItemName">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <h5 class="card-title stretched-link">@item.Name</h5>
+                                        </div>
+                                        <div class="col-12">
+                                            <p class="card-text font-italic">$@item.Price</p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+                @if (!Model.Items.Any())
+                {
+                    <p class="mx-auto">Sorry, there are no products matching your search.</p>
+                }
+            </div>
+            @await Html.PartialAsync("PaginationPartial", Model.Items)
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(function () {
+            $('[name=q]')[0].value = "@Model.q";
+        });
+        $(".page-link").click(function () {
+            pageNumber = $(this).data("page-number");
+            $("[name=PageNumber]")[0].value = pageNumber;
+            $("#filter").submit();
+        });
+    </script>
+}

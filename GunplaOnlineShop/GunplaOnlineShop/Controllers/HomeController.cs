@@ -9,34 +9,58 @@ using GunplaOnlineShop.Models;
 using GunplaOnlineShop.Data;
 using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using GunplaOnlineShop.ViewModels;
 
 namespace GunplaOnlineShop.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly AppDbContext _context;
-
-        public HomeController(ILogger<HomeController> logger, AppDbContext context)
+        public HomeController(AppDbContext context) : base(context)
         {
-            _logger = logger;
-            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(HomeViewModel model)
         {
-            return View();
+
+            var allItems = _context.Items
+                .AsNoTracking()
+                .Include(i => i.ItemCategories)
+                .ThenInclude(ic => ic.Category);
+            
+            var hgItems = allItems
+                .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == "High Grade"))
+                .OrderByDescending(i => i.TotalSales)
+                .Take(4);
+            var mgItems = allItems
+                .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == "Master Grade"))
+                .OrderByDescending(i => i.TotalSales)
+                .Take(4);
+            var pgItems = allItems
+                .Where(i => i.ItemCategories.Any(ic => ic.Category.Name == "Perfect Grade"))
+                .OrderByDescending(i => i.TotalSales)
+                .Take(4);
+            var bestSellingItems = allItems
+                .OrderByDescending(i => i.TotalSales)
+                .Take(4);
+            var newItems = allItems
+                .OrderByDescending(i => i.ReleaseDate)
+                .Take(4);
+
+
+
+            model.RootCategoryIds = await _context.Categories.AsNoTracking().Where(c => c.ParentCategoryId == null).Select(c => c.Id).ToArrayAsync();
+            model.HgItems = await hgItems.ToListAsync();
+            model.MgItems = await mgItems.ToListAsync();
+            model.PgItems = await pgItems.ToListAsync();
+            model.BestSellingItems = await bestSellingItems.ToListAsync();
+            model.NewItems = await newItems.ToListAsync();
+
+            return View(model);
         }
 
         public IActionResult Privacy()
         {
-            return View();
-        }
-
-        [HttpGet]
-        public IActionResult DisplayByCategory(string id) 
-        {
-           
             return View();
         }
 

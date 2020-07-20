@@ -1,4 +1,5 @@
 ﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> signInManager
+@using GunplaOnlineShop.Utilities
 
 <style>
     .navbar-custom {
@@ -29,6 +30,8 @@
       background-color: #1b6ec2;
       border-color: #1861ac;
     }
+
+    
 </style>
 
 <nav class="navbar navbar-static-top navbar-expand-xl navbar-dark navbar-custom">
@@ -39,30 +42,7 @@
         </button>
         <div class="collapse navbar-collapse " id="navbarResponsive">
             <ul class="navbar-nav ml-auto text-center">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="DisplayByCategory" asp-route-id="High Grade">HIGH GRADE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="DisplayByCategory" asp-route-id="Real Grade">REAL GRADE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="DisplayByCategory" asp-route-id="Master Grade">MASTER GRADE</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="DisplayByCategory" asp-route-id="Perfect Grade">PERFECT GRADE</a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownOtherGundam" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        OTHER GUNDAM SERIES
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownOtherGundam">
-                        <a class="dropdown-item" asp-action="Home" asp-controller="">ENTRY GRADE</a>
-                        <a class="dropdown-item" asp-action="Home" asp-controller="">RE/100</a>
-                        <a class="dropdown-item" asp-action="Home" asp-controller="">HIRM High-Resolution Model</a>
-                        <a class="dropdown-item" asp-action="Home" asp-controller="">SD Super Deformed</a>
-                    </div>
-                </li>
+                @Html.Raw(ViewBag.NavigationLinksHtml)
             </ul>
             <ul class="navbar-nav ml-auto">
                 @if (signInManager.IsSignedIn(User))
@@ -74,11 +54,25 @@
                             </button>
                         </form>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-item" asp-controller="Account" asp-action="Profile">
-                            @User.Identity.Name
-                        </a>
-                    </li>
+                    @if (Convert.ToBoolean(User.IsAdminCheck()))
+                    {
+
+                        <li class="nav-item d-flex align-items-center">
+                            <a class="nav-item text-white" asp-controller="Admin" asp-action="Index">
+                                @User.Identity.Name
+                            </a>
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item d-flex align-items-center">
+                            <a class="nav-item text-white" asp-controller="Account" asp-action="Profile">
+                                @User.Identity.Name
+                            </a>
+                        </li>
+                    }
+
                 }
                 else
                 {
@@ -90,6 +84,10 @@
                     </li>
                 }
             </ul>
+            <form class="form-inline mr-4" asp-controller="Collection" asp-action="Search" method="get">
+                <input class="form-control mr-sm-2" id="q" name="q" type="search" placeholder="Search" aria-label="Search" />
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
         </div>
     </div>
 </nav>

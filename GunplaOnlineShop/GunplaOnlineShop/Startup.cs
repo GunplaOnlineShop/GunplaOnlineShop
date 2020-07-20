@@ -32,8 +32,9 @@ namespace GunplaOnlineShop
             var dbSchema = Configuration.GetValue<string>("Database:Schema");
             var dbUser = Configuration.GetValue<string>("Database:Username");
             var dbPassword = Configuration.GetValue<string>("Database:Password");
+            var port = Configuration.GetValue<string>("Database:Port");
             // AppDbContext is the DbContext you need to define and place it in Model folder
-            services.AddDbContext<AppDbContext>(options => options.UseMySql($"server={dbHost};database={dbSchema};user={dbUser};password={dbPassword}"));
+            services.AddDbContext<AppDbContext>(options => options.UseMySql($"server={dbHost};port={port};database={dbSchema};user={dbUser};password={dbPassword}"));
             // Register identity service
             services.AddIdentity<ApplicationUser, IdentityRole>()
                     .AddEntityFrameworkStores<AppDbContext>();
@@ -44,7 +45,7 @@ namespace GunplaOnlineShop
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 10;
             });
-
+            services.AddRouting(options => options.LowercaseUrls = true); // enforce lowercase routing
             services.AddControllersWithViews();
         }
 
