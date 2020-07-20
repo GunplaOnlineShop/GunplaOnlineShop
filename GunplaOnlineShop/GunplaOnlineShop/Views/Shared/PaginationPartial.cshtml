@@ -1,0 +1,24 @@
+﻿<div class="row d-flex justify-content-center mt-5">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(Model.HasPreviousPage ? null : "disabled")">
+                <a class="page-link" data-page-number="@(Model.PageIndex - 1)" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                </a>
+            </li>
+            @foreach (int numPage in Enumerable.Range(1, Model.TotalPages))
+            {
+                <li class="page-item @(numPage == Model.PageIndex ? "active" : null)">
+                    <a class="page-link" href="#" data-page-number="@numPage">@numPage</a>
+                </li>
+            }
+            <li class="page-item @(Model.HasNextPage ? null : "disabled")">
+                <a class="page-link" data-page-number="@(Model.PageIndex + 1)" href="#" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
