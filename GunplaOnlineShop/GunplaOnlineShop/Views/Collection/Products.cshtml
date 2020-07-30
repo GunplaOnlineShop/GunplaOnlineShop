@@ -6,6 +6,15 @@
 
 <h1>@Model.Name</h1>
 
+@if (signInManager.IsSignedIn(User))
+{
+    @await Html.PartialAsync("AuthenticatedAddToCart", Model);
+}
+else
+{
+    @await Html.PartialAsync("NotAuthenticatedAddToCart", Model);
+}
+
 @if (Model.Qantity > 0)
 {
     @Html.HiddenFor(m => m.Id)
@@ -23,21 +32,26 @@ else
         $("#addToShoppingCart").click(function () {
             let itemId = $("#Id")[0].value;
             let quantity = $("#Quantity")[0].value;
-            let item = { id: itemId, quantity: quantity };
+            let newItem = { id: itemId, quantity: quantity };
             if (getCookie(cookieName) == "") {
                 // not init cookie yet
-                setCookie(cookieName, JSON.stringify([item]), 3);
+                setCookie(cookieName, JSON.stringify([newItem]), 3);
             } else {
                 let items = JSON.parse(getCookie(cookieName));
-
-                items.push(item);
+                let found = false;
+                for (let key in items) {
+                    let item = items[key];
+                    if (item.id === itemId) {
+                        item.quantity = parseInt(item.quantity) + parseInt(quantity);
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    items.push(newItem);
+                }
                 setCookie(cookieName, JSON.stringify(items), 3);
             }
         });
-
-        function isItemExists(items, itemId) {
-            
-        }
 
         function getCookie(cname) {
             var name = cname + "=";
