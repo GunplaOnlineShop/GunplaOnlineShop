@@ -1,4 +1,5 @@
 ﻿using GunplaOnlineShop.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc.RazorPages.Infrastructure;
 using Newtonsoft.Json;
@@ -13,15 +14,17 @@ namespace GunplaOnlineShop.ViewModels
 {
     public class CategoryCheck 
     {
-        public Category category { get; set; }
+        public string cateName { get; set; }
+        public int cateId { get; set; }
         public bool IsCheck { get; set; } = false;
     }
     public class ItemViewModel
     {
+        public int Id { get; set; }
+
         [Required]
         [MaxLength(60)]
         [StringLength(50)]
-
         public string Name { get; set; }
 
         [Required]
@@ -46,6 +49,9 @@ namespace GunplaOnlineShop.ViewModels
         
         [Required]
         public List<CategoryCheck> CategoryList { get; set; }
+
+        [Required]
+        public IFormFile CoverPhoto { get; set; }
 
     }
 }

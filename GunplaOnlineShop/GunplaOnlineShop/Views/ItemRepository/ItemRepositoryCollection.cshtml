@@ -72,14 +72,19 @@
                 @foreach (var item in Model.Items)
                 {
                     var urlEncodedItemName = GunplaOnlineShop.Utilities.UrlFormat.NameEncode(item.Name);
+                    var photoPath = "~/images/NoCoverImage.jpg";
+                    if (item.Photos.Any())
+                    {
+                        photoPath = item.Photos.Where(i => i.Url.Contains("/images/cover/")).FirstOrDefault().Url ?? "~/images/NoCoverImage.jpg";
+                    }
                     <div class="card mt-1 mb-1 ml-1 mr-1 border-0">
-                        <img src="~/images/@(item.Name).jpg" class="card-img-top" asp-append-version="true" />
+                        <img src="@photoPath" class="card-img-top" asp-append-version="true" />
                         <div class="card-body align-items-center justify-content-center">
                             <h5 class="card-title">@item.Name</h5>
-                            <div class="d-flex justify-content-center">
-                                <a asp-controller="ItemRepository" asp-action="Edit" class="btn btn-primary">Edit</a>
-                                <a asp-controller="ItemRepository" asp-action="Delete" class="btn btn-primary">Delete</a>
-                            </div>
+                            <form method="post" asp-action="Delete" asp-controller="ItemRepository" asp-route-id="@item.Id">
+                                <a asp-controller="ItemRepository" asp-action="ItemEdit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete item: @item.Name')">Delete</button>
+                            </form>
                         </div>
                     </div>
                 }
