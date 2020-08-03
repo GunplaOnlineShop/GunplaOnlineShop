@@ -84,6 +84,7 @@
                             <form method="post" asp-action="Delete" asp-controller="ItemRepository" asp-route-id="@item.Id">
                                 <a asp-controller="ItemRepository" asp-action="ItemEdit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a>
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete item: @item.Name')">Delete</button>
+                                <a asp-controller="ItemRepository" asp-action="PhotoEdit" asp-route-id="@item.Id" class="btn btn-primary">Edit Photo</a>
                             </form>
                         </div>
                     </div>

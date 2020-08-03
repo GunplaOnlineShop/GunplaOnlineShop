@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\images\cover\" />
+    <Folder Include="wwwroot\images\gallery\" />
   </ItemGroup>
 
 

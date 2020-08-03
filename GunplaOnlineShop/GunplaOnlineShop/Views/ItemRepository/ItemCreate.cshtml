@@ -7,7 +7,6 @@
 <div class="container">
     <div class="row">
         <form enctype="multipart/form-data" asp-controller="ItemRepository" asp-action="Create" method="post">
-            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name"></label>
                 <input asp-for="Name" class="form-control">
@@ -56,15 +55,29 @@
                     <label class="custom-file-label">Choose File...</label>
                 </div>
             </div>
+            <div class="form-group">
+                <label asp-for="GalleryPhotos"></label>
+                <div class="custom-file">
+                    <input asp-for="GalleryPhotos" multiple class="form-control custom-file-input" />
+                    <label class="custom-file-label">Choose Files...</label>
+                </div>
+            </div>
+            <div asp-validation-summary="All" class="text-danger"></div>
             <button type="submit" class="btn btn-primary btn-lg">Create</button>
             @section Scripts {
                 <script>
                     $(document).ready(function () {
                         $('.custom-file-input').on("change", function () {
-                            var fileName = $(this).val().split("\\").pop();
-                            $(this).next('.custom-file-label').html(fileName);
+                            var fileLabel = $(this).next('.custom-file-label');
+                            var files = $(this)[0].files;
+                            if (files.length > 1) {
+                                fileLabel.html(files.length + ' files selected');
+                            }
+                            else if (files.length == 1) {
+                                fileLabel.html(files[0].name);
+                            }
+                        });
                     });
-                });
                 </script>
             }
         </form>

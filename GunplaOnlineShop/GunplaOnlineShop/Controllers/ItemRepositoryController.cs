@@ -14,6 +14,8 @@ using System.Net;
 using System.Threading.Tasks;
 using static GunplaOnlineShop.QueryObjects.ItemSort;
 using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GunplaOnlineShop.Controllers
 {
@@ -65,35 +67,46 @@ namespace GunplaOnlineShop.Controllers
         {
             if (ModelState.IsValid)
             {
+                Item newItem = new Item();
                 if (_context.Items.Any(c => c.Name == model.Name)) return View("ItemCreate", model);
 
-                Photo coverPhoto = new Photo();
-                if (model.CoverPhoto != null)
+                if (model.CoverPhoto != null || model.GalleryPhotos != null)
                 {
-                    String uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/cover");
-                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CoverPhoto.FileName;
-                    var filePath = Path.Combine(uploadsFolder,uniqueFileName);
-                    model.CoverPhoto.CopyTo(new FileStream(filePath, FileMode.Create));
-                    coverPhoto.FilePath = filePath;
-                    coverPhoto.Name = uniqueFileName;
-                    coverPhoto.Url = "~/images/cover/"+uniqueFileName;
-                }
-                Item newItem = new Item();
+                    List<Photo> photos = new List<Photo>();
+                    if (model.CoverPhoto != null)
+                    {
+                        String uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/cover");
+                        var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CoverPhoto.FileName;
+                        var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        using (var fs = new FileStream(filePath, FileMode.Create))
+                        {
+                            model.CoverPhoto.CopyTo(fs);
+                        }
+                        photos.Add(new Photo() { Name = uniqueFileName, Url = "~/images/cover/" + uniqueFileName, FilePath = filePath });
+                    }
+                    if (model.GalleryPhotos != null && model.GalleryPhotos.Count > 0)
+                    {
+                        foreach (IFormFile photo in model.GalleryPhotos)
+                        {
+                            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath,"images/gallery");
+                            var uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                            var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                            using (var fs = new FileStream(filePath, FileMode.Create))
+                            {
+                                photo.CopyTo(fs);
+                            }
+                            photos.Add(new Photo() { Name = uniqueFileName, Url = "~/images/gallery/" + uniqueFileName, FilePath = filePath });
+                        }
+                    }
+                    newItem.Photos = photos;
+
+                }            
                 newItem.Name = model.Name;
                 newItem.Price = model.Price;
                 newItem.Description = model.Description;
                 newItem.Qantity = model.Qantity;
                 newItem.ReleaseDate = model.ReleaseDate;
                 newItem.IsAvailable = model.IsAvailable;
-                if (coverPhoto != null) 
-                {
-                    List<Photo> photos = new List<Photo>
-                    {
-                        coverPhoto,
-                    };
-                    newItem.Photos = photos;
-                }
-
                 List<ItemCategory> cateList = new List<ItemCategory>();
                 foreach (var Cate in model.CategoryList)
                 {
@@ -236,7 +249,7 @@ namespace GunplaOnlineShop.Controllers
                 _context.SaveChanges();
                 item.ItemCategories = cateList;
                 var updateItem = _context.Items.Attach(item);
-                updateItem.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+                updateItem.State = EntityState.Modified;
                 _context.SaveChanges();
                 return RedirectToAction("ItemRepositoryCollection", "ItemRepository");
 
@@ -244,5 +257,88 @@ namespace GunplaOnlineShop.Controllers
 
             return View("ItemEdit",model);
         }
+        public IActionResult PhotoEdit(int id)
+        {
+            var item = _context.Items
+                .Include(i => i.Photos)
+                .Where(i => i.Id == id).FirstOrDefault();
+            var model = new PhotoEditViewModel();
+            model.ItemId = id;
+            List<Photo> gallery = new List<Photo>();
+            if (item.Photos.Any()) 
+            {
+                foreach (var photo in item.Photos)
+                {
+                    if (photo.Url.Contains("cover"))
+                    {
+                        model.Cover = photo;
+                    }
+                    else
+                    {
+                        gallery.Add(photo);
+                    }
+                }
+                model.Gallery = gallery;
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult PhotoDelete(PhotoEditViewModel model, int id)
+        {
+            var photo = _context.Photos
+                .Where(i => i.Id == id)
+                .FirstOrDefault();
+            if (System.IO.File.Exists(photo.FilePath))
+            {
+                System.IO.File.Delete(photo.FilePath);
+            }
+            _context.Remove(photo);
+            _context.SaveChanges();
+
+            return RedirectToAction("PhotoEdit", new {id = model.ItemId});
+        }
+
+        [HttpPost]
+        public IActionResult PhotoAdd(PhotoEditViewModel model, int id)
+        {
+            var item = _context.Items
+                .Include(i => i.Photos)
+                .Where(i => i.Id == id).FirstOrDefault();
+            List<Photo> photos = new List<Photo>();
+            if (item.Photos.Any()) { photos = item.Photos.ToList(); }
+            if (model.CoverUpdate != null)
+            {
+                String uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/cover");
+                var uniqueFileName = Guid.NewGuid().ToString() + "_" + model.CoverUpdate.FileName;
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fs = new FileStream(filePath, FileMode.Create))
+                {
+                    model.CoverUpdate.CopyTo(fs);
+                }
+                photos.Add(new Photo() { Name = uniqueFileName, Url = "~/images/cover/" + uniqueFileName, FilePath = filePath });
+            }
+            if (model.GalleryUpdate != null && model.GalleryUpdate.Count > 0)
+            {
+                foreach (IFormFile photo in model.GalleryUpdate)
+                {
+                    string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images/gallery");
+                    var uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fs = new FileStream(filePath, FileMode.Create))
+                    {
+                        photo.CopyTo(fs);
+                    }
+                    photos.Add(new Photo() { Name = uniqueFileName, Url = "~/images/gallery/" + uniqueFileName, FilePath = filePath });
+                }
+            }
+            item.Photos = photos;
+            var updateItem = _context.Items.Attach(item);
+            updateItem.State = EntityState.Modified;
+            _context.SaveChanges();
+            return RedirectToAction("PhotoEdit", new { id = id });
+        }
+
     }
 }

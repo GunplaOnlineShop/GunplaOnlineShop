@@ -50,8 +50,10 @@ namespace GunplaOnlineShop.ViewModels
         [Required]
         public List<CategoryCheck> CategoryList { get; set; }
 
-        [Required]
+        
         public IFormFile CoverPhoto { get; set; }
+       
+        public List<IFormFile> GalleryPhotos { get; set; }
 
     }
 }
