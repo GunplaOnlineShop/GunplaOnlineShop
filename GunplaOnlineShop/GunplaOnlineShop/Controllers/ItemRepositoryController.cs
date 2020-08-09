@@ -29,7 +29,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
 
-        public async Task<IActionResult> ItemRepositoryCollection([Bind("PageNumber,SelectedOrder")] CollectionViewModel model)
+        public async Task<IActionResult> Index([Bind("PageNumber,SelectedOrder")] CollectionViewModel model)
         {
             model.PageSize = 20;
 
@@ -44,8 +44,9 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [HttpGet]
-        public IActionResult ItemCreate(ItemViewModel model)
+        public IActionResult Create()
         {
+            var model = new ItemViewModel();
             var categories = _context.Categories
                 .AsTracking()
                 .ToList();
@@ -63,12 +64,18 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(ItemViewModel model)
         {
             if (ModelState.IsValid)
             {
                 Item newItem = new Item();
-                if (_context.Items.Any(c => c.Name == model.Name)) return View("ItemCreate", model);
+                if (_context.Items.Any(c => c.Name == model.Name))
+                {
+                    ViewBag.nameExist = "Item Name Exist";
+                    return View(model);
+                }
+                    
 
                 if (model.CoverPhoto != null || model.GalleryPhotos != null)
                 {
@@ -124,18 +131,20 @@ namespace GunplaOnlineShop.Controllers
 
                 _context.Items.Add(newItem);
                 _context.SaveChanges();
-                return RedirectToAction("ItemRepositoryCollection", "ItemRepository");
+                return RedirectToAction("Index", "ItemRepository");
 
             }
-            return View("ItemCreate", model);
+            return View(model);
         }
 
+        
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return RedirectToAction("ItemRepositoryCollection", "ItemRepository");
+                return RedirectToAction("Index", "ItemRepository");
             }
             var item = _context.Items
                 .Include(i => i.ItemCategories)
@@ -145,7 +154,7 @@ namespace GunplaOnlineShop.Controllers
                 .FirstOrDefault();
             if (item == null)
             {
-                return RedirectToAction("ItemRepositoryCollection", "ItemRepository");
+                return RedirectToAction("Index", "ItemRepository");
             }
             var photoTemp = item.Photos;
             _context.Items.Remove(item);
@@ -163,11 +172,11 @@ namespace GunplaOnlineShop.Controllers
             }
             _context.SaveChanges();
 
-            return RedirectToAction("ItemRepositoryCollection", "ItemRepository");
+            return RedirectToAction("Index", "ItemRepository");
         }
 
         [HttpGet]
-        public IActionResult ItemEdit(int id)
+        public IActionResult Edit(int id)
         {
             var item = _context.Items.Find(id);
 
@@ -213,6 +222,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(ItemViewModel model)
         {
             if (ModelState.IsValid)
@@ -251,12 +261,12 @@ namespace GunplaOnlineShop.Controllers
                 var updateItem = _context.Items.Attach(item);
                 updateItem.State = EntityState.Modified;
                 _context.SaveChanges();
-                return RedirectToAction("ItemRepositoryCollection", "ItemRepository");
+                return RedirectToAction("Index", "ItemRepository");
 
             }
-
-            return View("ItemEdit",model);
+            return View(model);
         }
+
         public IActionResult PhotoEdit(int id)
         {
             var item = _context.Items
@@ -285,6 +295,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult PhotoDelete(PhotoEditViewModel model, int id)
         {
             var photo = _context.Photos
@@ -301,6 +312,7 @@ namespace GunplaOnlineShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult PhotoAdd(PhotoEditViewModel model, int id)
         {
             var item = _context.Items

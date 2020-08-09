@@ -1,6 +1,6 @@
 ﻿@model GunplaOnlineShop.ViewModels.ItemViewModel
 @{
-    ViewData["Title"] = "ItemEdit";
+    ViewData["Title"] = "Edit";
 }
 
     <div class="container">
@@ -49,7 +49,8 @@
                     <textarea asp-for="Description" class="form-control" rows="3"></textarea>
                     <span asp-validation-for="Description" class="text-danger"></span>
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg">Edit</button>
+                <button type="submit" class="btn btn-primary btn-lg">Save</button>
+                <a asp-controller="ItemRepository" asp-action="Index" class="btn btn-primary btn-lg">Back</a>
             </form>
         </div>
     </div>
