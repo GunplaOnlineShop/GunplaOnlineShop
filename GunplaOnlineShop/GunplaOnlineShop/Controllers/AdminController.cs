@@ -1,4 +1,6 @@
 ﻿using GunplaOnlineShop.Data;
+using GunplaOnlineShop.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ namespace GunplaOnlineShop.Controllers
 {
     public class AdminController:BaseController
     {
-        public AdminController(AppDbContext context) : base(context)
+        public AdminController(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context, userManager)
         { }
 
         public IActionResult Index()

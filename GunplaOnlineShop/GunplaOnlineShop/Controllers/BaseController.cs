@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using GunplaOnlineShop.Data;
+using GunplaOnlineShop.Models;
 using GunplaOnlineShop.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -11,10 +13,18 @@ namespace GunplaOnlineShop.Controllers
 {
     public class BaseController : Controller
     {
-        protected readonly AppDbContext _context;
-        public BaseController(AppDbContext context)
+        protected AppDbContext _context;
+        protected readonly UserManager<ApplicationUser> _userManager;
+        protected ApplicationUser _currentLoggedInUser;
+        public BaseController(AppDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
+        }
+
+        public async Task<ApplicationUser> GetCurrentLoggedInUser()
+        {
+            return _currentLoggedInUser ??= await _userManager.GetUserAsync(User);
         }
 
         public override void OnActionExecuting(ActionExecutingContext actionExecutingContext)

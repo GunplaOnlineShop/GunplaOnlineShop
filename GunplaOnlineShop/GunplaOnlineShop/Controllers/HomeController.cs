@@ -11,12 +11,13 @@ using System.Runtime.CompilerServices;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using GunplaOnlineShop.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace GunplaOnlineShop.Controllers
 {
     public class HomeController : BaseController
     {
-        public HomeController(AppDbContext context) : base(context)
+        public HomeController(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context, userManager)
         {
         }
 

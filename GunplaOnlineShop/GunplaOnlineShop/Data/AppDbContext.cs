@@ -24,6 +24,7 @@ namespace GunplaOnlineShop.Data
         public DbSet<Review> Reviews { get; set; }
         public DbSet<MailingAddress> MailingAddresses { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<ShoppingCartLineItem> ShoppingCartLineItems { get; set; }
 
         // define relationships in OnModelCreating() using fluent API
         protected override void OnModelCreating(ModelBuilder modelBuilder)

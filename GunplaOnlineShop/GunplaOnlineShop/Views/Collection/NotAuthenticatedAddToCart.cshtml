@@ -1,1 +1,64 @@
-﻿
+﻿@model Item
+
+@if (Model.Qantity > 0)
+{
+    @Html.HiddenFor(m => m.Id)
+    <input id="Quantity" name="Quantity" type="number" min="1" max="@Model.Qantity" value="1" class="form-control" />
+    <button id="addToShoppingCart" class="btn btn-outline-primary">ADD TO CART</button>
+}
+else
+{
+    <button class="btn btn-outline-secondary">SOLD OUT</button>
+}
+
+@section Scripts{
+    <script type="text/javascript">
+        const cookieName = "ShoppingCart";
+        $("#addToShoppingCart").click(function () {
+            let itemId = $("#Id")[0].value;
+            let quantity = $("#Quantity")[0].value;
+            let newItem = { id: itemId, quantity: quantity };
+            if (getCookie(cookieName) == "") {
+                // not init cookie yet
+                setCookie(cookieName, JSON.stringify([newItem]), 3);
+            } else {
+                let items = JSON.parse(getCookie(cookieName));
+                let found = false;
+                for (let key in items) {
+                    let item = items[key];
+                    if (item.id === itemId) {
+                        item.quantity = parseInt(item.quantity) + parseInt(quantity);
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    items.push(newItem);
+                }
+                setCookie(cookieName, JSON.stringify(items), 3);
+            }
+        });
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+    </script>
+}
