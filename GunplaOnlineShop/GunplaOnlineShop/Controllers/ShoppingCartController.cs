@@ -29,12 +29,19 @@ namespace GunplaOnlineShop.Controllers
             var item = _context.Items.FindAsync(lineItem.ItemId);
             if (item == null) return BadRequest();
 
-            // extract items from cookie
+            if (HttpContext.Request.Cookies != null)
+            {
+                // extract items from cookie if exists
+                string shoppingCartCookie = HttpContext.Request.Cookies["GunplaShopShoppingCart"];
+                // decode the cookie content
+
+            }
 
 
             if (await GetCurrentLoggedInUser() == null)
             {
                 // not logged in
+
             }
             else
             {
