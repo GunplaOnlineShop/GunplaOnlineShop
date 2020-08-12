@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authorization;
 using GunplaOnlineShop.Utilities;
+using Microsoft.AspNetCore.Identity;
 
 namespace GunplaOnlineShop.Controllers
 {
@@ -28,7 +29,7 @@ namespace GunplaOnlineShop.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ItemRepositoryController(AppDbContext context,IWebHostEnvironment webHostEnvironment) : base(context) 
+        public ItemRepositoryController(AppDbContext context, UserManager<ApplicationUser> userManager,IWebHostEnvironment webHostEnvironment) : base(context, userManager) 
         {
             _webHostEnvironment = webHostEnvironment;
         }
