@@ -7,6 +7,7 @@
 <div class="container">
     <div class="row">
         <form enctype="multipart/form-data" asp-controller="ItemRepository" asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <div class="form-group">
                 <p class="text-danger">@ViewBag.nameExist</p>
                 <label asp-for="Name"></label>
@@ -63,7 +64,6 @@
                     <label class="custom-file-label">Choose Files...</label>
                 </div>
             </div>
-            <div asp-validation-summary="All" class="text-danger"></div>
             <button type="submit" class="btn btn-primary btn-lg">Create</button>
             <a asp-controller="ItemRepository" asp-action="Index" class="btn btn-primary btn-lg">Back</a>
             @section Scripts {
