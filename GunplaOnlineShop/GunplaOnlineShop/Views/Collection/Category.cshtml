@@ -90,7 +90,7 @@
                     }
                     @Html.HiddenFor(m => m.PageNumber)
                     <div class="col-9 px-0">
-                        <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<GunplaOnlineShop.QueryObjects.ItemSort.SortOrder>()" onchange="this.form.submit()" class="form-control"></select>
+                        <select asp-for="SelectedOrder" asp-items="Html.GetEnumSelectList<GunplaOnlineShop.QueryObjects.ItemSort.SortOrder>()" class="form-control"></select>
                     </div>
                 </form>
             </div>
@@ -133,6 +133,10 @@
     <script type="text/javascript">
         $(function () {
             $('[name=q]')[0].value = "@Model.q";
+        });
+        $("#SelectedOrder").change(function () {
+            $("[name=PageNumber]")[0].value = 1;
+            this.form.submit();
         });
         $(".page-link").click(function () {
             pageNumber = $(this).data("page-number");

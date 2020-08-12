@@ -12,6 +12,7 @@ using GunplaOnlineShop.Models;
 using GunplaOnlineShop.Utilities;
 using GunplaOnlineShop.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -104,6 +105,7 @@ namespace GunplaOnlineShop.Controllers
                 .Include(i => i.Reviews)
                 .FirstOrDefaultAsync();
             if (item == null) return NotFound();
+
             return View(item);
         }
 
