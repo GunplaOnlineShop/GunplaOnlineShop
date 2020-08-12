@@ -48,7 +48,7 @@ namespace GunplaOnlineShop.Controllers
                 // logged in
             }
 
-            return Ok();
+            return RedirectToAction("Index");
         }
     }
 }
