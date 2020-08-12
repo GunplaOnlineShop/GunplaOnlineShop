@@ -1,0 +1,88 @@
+﻿@model GunplaOnlineShop.ViewModels.ItemViewModel
+@{
+    ViewData["Title"] = "ItemCreate";
+}
+
+
+<div class="container">
+    <div class="row">
+        <form enctype="multipart/form-data" asp-controller="ItemRepository" asp-action="Create" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <p class="text-danger">@ViewBag.nameExist</p>
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control">
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price"></label>
+                <input asp-for="Price" class="form-control">
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ReleaseDate"></label>
+                <input asp-for="ReleaseDate" class="form-control" />
+                <span asp-validation-for="ReleaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Qantity"></label>
+                <input asp-for="Qantity" class="form-control" />
+                <span asp-validation-for="Qantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IsAvailable"></label>
+                <input asp-for="IsAvailable" class="form-control" />
+                <span asp-validation-for="IsAvailable" class="text-danger"></span>
+            </div>
+            <ul>
+                @for (var i = 0; i < Model.CategoryList.Count; i++)
+                {
+                    <li>
+                        <input type="checkbox" asp-for="CategoryList[i].IsCheck">
+                        <label asp-for="CategoryList[i].IsCheck">@Model.CategoryList[i].cateName</label>
+                        <input type="hidden" asp-for="CategoryList[i].cateId" />
+                        <input type="hidden" asp-for="CategoryList[i].cateName" />
+                    </li>
+                }
+            </ul>
+            <div class="form-group">
+                <label asp-for="Description"></label>
+                <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="CoverPhoto"></label>
+                <div class="custom-file">
+                    <input asp-for="CoverPhoto" class="form-control custom-file-input" />
+                    <label class="custom-file-label">Choose File...</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="GalleryPhotos"></label>
+                <div class="custom-file">
+                    <input asp-for="GalleryPhotos" multiple class="form-control custom-file-input" />
+                    <label class="custom-file-label">Choose Files...</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Create</button>
+            <a asp-controller="ItemRepository" asp-action="Index" class="btn btn-primary btn-lg">Back</a>
+            @section Scripts {
+                <script>
+                    $(document).ready(function () {
+                        $('.custom-file-input').on("change", function () {
+                            var fileLabel = $(this).next('.custom-file-label');
+                            var files = $(this)[0].files;
+                            if (files.length > 1) {
+                                fileLabel.html(files.length + ' files selected');
+                            }
+                            else if (files.length == 1) {
+                                fileLabel.html(files[0].name);
+                            }
+                        });
+                    });
+                </script>
+            }
+        </form>
+    </div>
+</div>
+

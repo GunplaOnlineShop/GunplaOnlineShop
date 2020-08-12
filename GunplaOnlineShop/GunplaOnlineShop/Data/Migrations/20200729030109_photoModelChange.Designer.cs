@@ -3,14 +3,16 @@ using System;
 using GunplaOnlineShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GunplaOnlineShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200729030109_photoModelChange")]
+    partial class photoModelChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,6 +113,9 @@ namespace GunplaOnlineShop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<decimal>("AverageRating")
                         .HasColumnType("decimal(3, 2)");
 
@@ -139,6 +144,8 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Items");
                 });
@@ -326,36 +333,6 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("GunplaOnlineShop.Models.ShoppingCartLineItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ItemId");
-
-                    b.ToTable("ShoppingCartLineItems");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -491,6 +468,13 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasForeignKey("ParentCategoryId");
                 });
 
+            modelBuilder.Entity("GunplaOnlineShop.Models.Item", b =>
+                {
+                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", null)
+                        .WithMany("ShoppingCartItems")
+                        .HasForeignKey("ApplicationUserId");
+                });
+
             modelBuilder.Entity("GunplaOnlineShop.Models.ItemCategory", b =>
                 {
                     b.HasOne("GunplaOnlineShop.Models.Category", "Category")
@@ -557,19 +541,6 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.HasOne("GunplaOnlineShop.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Reviews")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("GunplaOnlineShop.Models.ShoppingCartLineItem", b =>
-                {
-                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", null)
-                        .WithMany("ShoppingCart")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("GunplaOnlineShop.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
