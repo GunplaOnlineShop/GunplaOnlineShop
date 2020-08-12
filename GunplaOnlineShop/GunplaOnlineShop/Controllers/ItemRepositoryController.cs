@@ -16,9 +16,14 @@ using static GunplaOnlineShop.QueryObjects.ItemSort;
 using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
+using GunplaOnlineShop.Utilities;
 
 namespace GunplaOnlineShop.Controllers
 {
+
+    [Authorize(Policy = "AdminOnly")]
     public class ItemRepositoryController : BaseController
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
@@ -31,8 +36,12 @@ namespace GunplaOnlineShop.Controllers
 
         public async Task<IActionResult> Index([Bind("PageNumber,SelectedOrder")] CollectionViewModel model)
         {
-            model.PageSize = 20;
+            String coverPath = Path.Combine(_webHostEnvironment.WebRootPath, "images\\cover");
+            String galleryPath = Path.Combine(_webHostEnvironment.WebRootPath, "images\\gallery");
+            if (!Directory.Exists(coverPath)) Directory.CreateDirectory(coverPath);
+            if (!Directory.Exists(galleryPath)) Directory.CreateDirectory(galleryPath);
 
+            model.PageSize = 20;
             var allItems = _context.Items
                 .Include(i=>i.Photos)
                 .AsNoTracking();
@@ -75,7 +84,8 @@ namespace GunplaOnlineShop.Controllers
                     ViewBag.nameExist = "Item Name Exist";
                     return View(model);
                 }
-                    
+
+
 
                 if (model.CoverPhoto != null || model.GalleryPhotos != null)
                 {

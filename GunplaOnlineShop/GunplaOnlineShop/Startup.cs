@@ -45,6 +45,11 @@ namespace GunplaOnlineShop
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 10;
             });
+            //Register Admin Authorization
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireClaim("IsAdmin"));
+            });
             services.AddRouting(options => options.LowercaseUrls = true); // enforce lowercase routing
             services.AddControllersWithViews();
         }
