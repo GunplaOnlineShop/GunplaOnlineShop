@@ -1,16 +1,17 @@
-﻿@model Item
+﻿@model ProductViewModel
 
 @{
-    ViewData["title"] = Model.Name + " - WhiteBase Gunpla Shop";
+    ViewData["title"] = Model.Item.Name + " - WhiteBase Gunpla Shop";
 }
 
-<h1>@Model.Name</h1>
+<h1>@Model.Item.Name</h1>
 
-@if (Model.Qantity > 0)
+@if (Model.Item.Quantity > 0)
 {
     <form asp-controller="ShoppingCart" asp-action="AddItemToShoppingCart">
-        <input hidden id="ItemId" name="ItemId" value="@Model.Id" />
-        <input id="Quantity" name="Quantity" type="number" min="1" max="@Model.Qantity" value="1" class="form-control" />
+        <div asp-validation-summary="All" class="text-danger ml-2"></div>
+        <input hidden id="ItemId" name="ItemId" value="@Model.Item.Id" />
+        <input id="Quantity" name="Quantity" type="number" min="1" max="@Model.Item.Quantity" value="1" class="form-control" />
         <button id="addToShoppingCart" type="submit" class="btn btn-outline-primary">ADD TO CART</button>
     </form>
 }

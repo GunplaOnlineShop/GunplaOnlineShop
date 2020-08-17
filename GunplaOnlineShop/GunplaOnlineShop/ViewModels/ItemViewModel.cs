@@ -39,7 +39,7 @@ namespace GunplaOnlineShop.ViewModels
 
         [Required]
         [Range(0, int.MaxValue)]
-        public int Qantity { get; set; }
+        public int Quantity { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime ReleaseDate { get; set; }

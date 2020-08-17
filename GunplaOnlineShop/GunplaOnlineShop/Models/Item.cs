@@ -24,7 +24,7 @@ namespace GunplaOnlineShop.Models
         public string Description { get; set; }
         [Required]
         [Range(0, int.MaxValue)]
-        public int Qantity { get; set; }
+        public int Quantity { get; set; }
         [Range(0, 5)]
         [Column(TypeName = "decimal(3, 2)")]
         public decimal AverageRating { get; set; }

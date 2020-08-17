@@ -106,7 +106,9 @@ namespace GunplaOnlineShop.Controllers
                 .Include(i => i.Reviews)
                 .FirstOrDefaultAsync();
             if (item == null) return NotFound();
-            return View(item);
+            var model = new ProductViewModel();
+            model.Item = item;
+            return View(model);
         }
 
     }

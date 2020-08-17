@@ -16,9 +16,10 @@ namespace GunplaOnlineShop.Models
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Total { get; set; }
 
-        public string UserId { get; set; }
-        [ForeignKey("UserId")]
-        public ApplicationUser ApplicationUser { get; set; }
+        [Required]
+        public string CustomerId { get; set; }
+        [ForeignKey("CustomerId")]
+        public ApplicationUser Customer { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
     }
 }
