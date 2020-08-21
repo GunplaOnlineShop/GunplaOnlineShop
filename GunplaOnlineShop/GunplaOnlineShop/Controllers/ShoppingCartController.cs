@@ -73,7 +73,7 @@ namespace GunplaOnlineShop.Controllers
                 var model = new ProductViewModel();
                 model.Item = item;
                 model.lineItem = lineItem;
-                return View("/Views/Collection/Products.cshtml",model);
+                return View("~/Views/Collection/Products.cshtml",model);
             }
             var customer = await GetCurrentLoggedInUser();
             if (customer == null)
