@@ -28,14 +28,21 @@ namespace GunplaOnlineShop.Controllers
             {
                 // not logged in
                 // take out the shopping cart data from cookie 
-
-                return View();
+                List<AddItemViewModel> ShoppingCartLineItems = new List<AddItemViewModel>();
+                if (HttpContext.Request.Cookies["GunplaShopShoppingCart"] != null)
+                {
+                    // extract items from cookie if exists
+                    string shoppingCartCookie = HttpContext.Request.Cookies["GunplaShopShoppingCart"];
+                    // deserialize the cookie
+                    ShoppingCartLineItems = JsonSerializer.Deserialize<List<AddItemViewModel>>(shoppingCartCookie);
+                }
+                return View(ShoppingCartLineItems);
             }
             else
             {
                 // logged in
                 var shoppingCartForThisUser = await _context.ShoppingCartLineItems.Where(li => li.CustomerId == currentUser.Id).ToListAsync();
-                return View();
+                return View(shoppingCartForThisUser);
             }
         }
 
@@ -89,6 +96,10 @@ namespace GunplaOnlineShop.Controllers
                 // logged in
                 foreach (var shoppingCartLineItem in ShoppingCartLineItems)
                 {
+                    if (await _context.Items.FindAsync(shoppingCartLineItem.ItemId) == null)
+                    {
+                        continue;
+                    }
                     var scli = _context.ShoppingCartLineItems.Where(li => li.CustomerId == customer.Id && li.ItemId == shoppingCartLineItem.ItemId).FirstOrDefault();
                     if (scli != null)
                     {
@@ -102,7 +113,7 @@ namespace GunplaOnlineShop.Controllers
                             Quantity = shoppingCartLineItem.Quantity,
                             CustomerId = customer.Id
                         });
-                    }    
+                    }
                 }
                 await _context.SaveChangesAsync();
                 HttpContext.Response.Cookies.Delete("GunplaShopShoppingCart");

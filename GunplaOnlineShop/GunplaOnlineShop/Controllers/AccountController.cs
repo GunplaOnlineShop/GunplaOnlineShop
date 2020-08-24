@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
+using GunplaOnlineShop.Data;
 using GunplaOnlineShop.Models;
 using GunplaOnlineShop.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -20,12 +22,13 @@ namespace GunplaOnlineShop.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
+        private AppDbContext _context;
 
-        public AccountController(UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, AppDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         // GET: /Account/Register
@@ -79,9 +82,44 @@ namespace GunplaOnlineShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, false);
+                var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, true, false);
 
                 if (result.Succeeded)
+                {
+                    // sync user shopping cart cookie data if there are any
+                    List<AddItemViewModel> ShoppingCartLineItems = new List<AddItemViewModel>();
+                    if (HttpContext.Request.Cookies["GunplaShopShoppingCart"] != null)
+                    {
+                        // extract items from cookie if exists
+                        string shoppingCartCookie = HttpContext.Request.Cookies["GunplaShopShoppingCart"];
+                        // deserialize the cookie
+                        ShoppingCartLineItems = JsonSerializer.Deserialize<List<AddItemViewModel>>(shoppingCartCookie);
+                    }
+                    var customerId = _userManager.GetUserId(User); // Get user id:
+                    foreach (var shoppingCartLineItem in ShoppingCartLineItems)
+                    {
+                        if (await _context.Items.FindAsync(shoppingCartLineItem.ItemId) == null)
+                        {
+                            continue;
+                        }
+                        var scli = _context.ShoppingCartLineItems.Where(li => li.CustomerId == customerId && li.ItemId == shoppingCartLineItem.ItemId).FirstOrDefault();
+                        if (scli != null)
+                        {
+                            scli.Quantity += shoppingCartLineItem.Quantity;
+                        }
+                        else
+                        {
+                            _context.ShoppingCartLineItems.Add(new ShoppingCartLineItem
+                            {
+                                ItemId = shoppingCartLineItem.ItemId,
+                                Quantity = shoppingCartLineItem.Quantity,
+                                CustomerId = customerId
+                            });
+                        }
+                    }
+                    await _context.SaveChangesAsync();
+                    HttpContext.Response.Cookies.Delete("GunplaShopShoppingCart");
+
 
                     if (Url.IsLocalUrl(returnUrl))
                     {
@@ -91,9 +129,10 @@ namespace GunplaOnlineShop.Controllers
                     {
                         return RedirectToAction("Index", "Home");
                     }
+                }
                 else
                 {
-                    ModelState.AddModelError(string.Empty,"Invalid Login Attempt");
+                    ModelState.AddModelError(string.Empty, "Invalid Login Attempt");
                 }
             }
             return View(model);
