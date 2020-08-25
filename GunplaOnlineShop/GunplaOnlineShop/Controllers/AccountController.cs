@@ -95,14 +95,14 @@ namespace GunplaOnlineShop.Controllers
                         // deserialize the cookie
                         ShoppingCartLineItems = JsonSerializer.Deserialize<List<AddItemViewModel>>(shoppingCartCookie);
                     }
-                    var customerId = _userManager.GetUserId(User); // Get user id:
+                    var customer = await _userManager.FindByNameAsync(model.Email);
                     foreach (var shoppingCartLineItem in ShoppingCartLineItems)
                     {
                         if (await _context.Items.FindAsync(shoppingCartLineItem.ItemId) == null)
                         {
                             continue;
                         }
-                        var scli = _context.ShoppingCartLineItems.Where(li => li.CustomerId == customerId && li.ItemId == shoppingCartLineItem.ItemId).FirstOrDefault();
+                        var scli = _context.ShoppingCartLineItems.Where(li => li.CustomerId == customer.Id && li.ItemId == shoppingCartLineItem.ItemId).FirstOrDefault();
                         if (scli != null)
                         {
                             scli.Quantity += shoppingCartLineItem.Quantity;
@@ -113,7 +113,7 @@ namespace GunplaOnlineShop.Controllers
                             {
                                 ItemId = shoppingCartLineItem.ItemId,
                                 Quantity = shoppingCartLineItem.Quantity,
-                                CustomerId = customerId
+                                CustomerId = customer.Id
                             });
                         }
                     }

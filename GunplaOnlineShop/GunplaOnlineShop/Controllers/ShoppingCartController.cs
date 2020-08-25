@@ -36,13 +36,14 @@ namespace GunplaOnlineShop.Controllers
                     // deserialize the cookie
                     ShoppingCartLineItems = JsonSerializer.Deserialize<List<AddItemViewModel>>(shoppingCartCookie);
                 }
-                return View(ShoppingCartLineItems);
+                var model = new ShoppingCartViewModel(_context, ShoppingCartLineItems);
+                return View(model);
             }
             else
             {
                 // logged in
-                var shoppingCartForThisUser = await _context.ShoppingCartLineItems.Where(li => li.CustomerId == currentUser.Id).ToListAsync();
-                return View(shoppingCartForThisUser);
+                var model = new ShoppingCartViewModel(_context, currentUser.Id);
+                return View(model);
             }
         }
 

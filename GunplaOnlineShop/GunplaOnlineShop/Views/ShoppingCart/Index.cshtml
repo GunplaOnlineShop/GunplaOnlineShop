@@ -1,1 +1,34 @@
-﻿
+﻿@model ShoppingCartViewModel
+
+@if (!Model.ShoppingCartItems.Any())
+{
+    <p>Your Shopping Cart is empty!</p>
+}
+else
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var lineItem in Model.ShoppingCartItems)
+            {
+                <tr>
+                    <td>@lineItem.Item.Name</td>
+                    <td>@lineItem.Item.Price</td>
+                    <td>@lineItem.Quantity</td>
+                    <td>@lineItem.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="float-right">
+    <h3>Subtotal: @Model.Total</h3>
+</div>
