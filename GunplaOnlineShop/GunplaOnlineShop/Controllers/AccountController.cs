@@ -98,7 +98,8 @@ namespace GunplaOnlineShop.Controllers
                     var customer = await _userManager.FindByNameAsync(model.Email);
                     foreach (var shoppingCartLineItem in ShoppingCartLineItems)
                     {
-                        if (await _context.Items.FindAsync(shoppingCartLineItem.ItemId) == null)
+                        var item = await _context.Items.FindAsync(shoppingCartLineItem.ItemId);
+                        if (item == null || shoppingCartLineItem.Quantity > item.Quantity)
                         {
                             continue;
                         }

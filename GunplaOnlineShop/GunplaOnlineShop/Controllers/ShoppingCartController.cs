@@ -20,7 +20,8 @@ namespace GunplaOnlineShop.Controllers
         public ShoppingCartController(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context, userManager)
         {
         }
-
+        [Route("/cart")]
+        [Route("/cart/{action}")]
         public async Task<IActionResult> Index()
         {
             var currentUser = await GetCurrentLoggedInUser();
@@ -90,6 +91,7 @@ namespace GunplaOnlineShop.Controllers
                 // save the shopping cart to the cookie
                 CookieOptions option = new CookieOptions();
                 option.Expires = DateTime.Now.AddDays(3);
+                option.HttpOnly = true;
                 HttpContext.Response.Cookies.Append("GunplaShopShoppingCart", JsonSerializer.Serialize(ShoppingCartLineItems), option);
             }
             else

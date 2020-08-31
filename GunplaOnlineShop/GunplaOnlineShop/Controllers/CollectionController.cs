@@ -93,7 +93,7 @@ namespace GunplaOnlineShop.Controllers
             return View(model);
         }
 
-
+        [Route("{controller}/{action}/{name}")]
         [Route("{controller}/{grade}/{action}/{name}")]
         public async Task<IActionResult> Products(string grade, string name)
         {

@@ -1,5 +1,8 @@
 ﻿@model ShoppingCartViewModel
 
+<div class="container">
+<h1 class="text-center mt-5">Shopping cart</h1>
+<hr/>
 @if (!Model.ShoppingCartItems.Any())
 {
     <p>Your Shopping Cart is empty!</p>
@@ -9,10 +12,10 @@ else
     <table class="table table-bordered">
         <thead>
             <tr>
-                <th scope="col">Item Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total</th>
+                <th style="width: 50%">Item Name</th>
+                <th style="width: 20%">Price</th>
+                <th style="width: 10%">Quantity</th>
+                <th style="width: 20%">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -20,15 +23,20 @@ else
             {
                 <tr>
                     <td>@lineItem.Item.Name</td>
-                    <td>@lineItem.Item.Price</td>
-                    <td>@lineItem.Quantity</td>
-                    <td>@lineItem.Total</td>
+                    <td>@lineItem.Item.Price.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</td>
+                    <td><input class="form-control" value="@lineItem.Quantity" /></td>
+                    <td>@lineItem.Total.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</td>
                 </tr>
             }
+            <tr style="">
+                <td colspan="4"><input class="btn btn-primary float-right" type="submit" value="Update Cart" /></td>
+            </tr>
         </tbody>
     </table>
 }
 
 <div class="float-right">
-    <h3>Subtotal: @Model.Total</h3>
+    <h3>Subtotal: @Model.Total.ToString("C", System.Globalization.CultureInfo.CurrentCulture)</h3>
+</div>
+
 </div>
