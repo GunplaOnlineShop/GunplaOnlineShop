@@ -20,6 +20,7 @@ namespace GunplaOnlineShop.Controllers
         public ShoppingCartController(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context, userManager)
         {
         }
+
         [Route("/cart")]
         [Route("/cart/{action}")]
         public async Task<IActionResult> Index()
@@ -46,6 +47,12 @@ namespace GunplaOnlineShop.Controllers
                 var model = new ShoppingCartViewModel(_context, currentUser.Id);
                 return View(model);
             }
+        }
+
+        public IActionResult UpdateCart()
+        {
+            
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
