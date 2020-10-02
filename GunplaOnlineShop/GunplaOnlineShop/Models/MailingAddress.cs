@@ -54,7 +54,6 @@ namespace GunplaOnlineShop.Models
 
         [Required]
         public string CustomerId { get; set; }
-        [ForeignKey("CustomerId")]
-        public virtual ApplicationUser Customer { get; set; }
+        public ApplicationUser Customer { get; set; }
     }
 }

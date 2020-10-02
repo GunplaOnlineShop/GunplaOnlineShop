@@ -11,6 +11,6 @@ namespace GunplaOnlineShop.Models
         public bool IsAdmin { get; set; }
         public virtual ICollection<ShoppingCartLineItem> ShoppingCart { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
-        public virtual ICollection<MailingAddress> MailingAddresses { get; set; }
+        public ICollection<MailingAddress> MailingAddresses { get; set; }
     }
 }

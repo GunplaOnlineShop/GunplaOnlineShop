@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
+using System.Reflection.Emit;
 using System.Threading.Tasks;
 
 namespace GunplaOnlineShop.Data
@@ -39,6 +41,17 @@ namespace GunplaOnlineShop.Data
 
             modelBuilder.Entity<ItemCategory>()
                 .HasKey(ic => new { ic.ItemId, ic.CategoryId });
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(a => a.MailingAddresses)
+                .WithOne(c => c.Customer)
+                .HasForeignKey(c => c.CustomerId);
+
+            modelBuilder.Entity<MailingAddress>()
+                .HasOne(c => c.Customer)
+                .WithMany(a => a.MailingAddresses)
+                .HasForeignKey(c => c.CustomerId);
+                
             // use Flutent API to configure relationships
             //modelBuilder.Entity<User>()    // One-To-Many
             //    .HasMany(u => u.Reservations)
@@ -46,6 +59,24 @@ namespace GunplaOnlineShop.Data
             //modelBuilder.Entity<Reservation>()   // Many-To-One
             //.HasOne(r => r.Table)
             //.WithMany(t => t.Reservations);
+            /*
+            modelBuilder.Entity<ApplicationUser>(
+                TypeBuilder =>
+                {
+                    TypeBuilder.HasMany(appUser => appUser.MailingAddresses)
+                        .WithOne(mailAddress => mailAddress.Customer)
+                        .HasForeignKey(mailAddress => mailAddress.CustomerId)
+                        .IsRequired();
+                });
+            modelBuilder.Entity<MailingAddress>(
+                TypeBuilder =>
+                {
+                    TypeBuilder.HasOne(mailAddress => mailAddress.Customer)
+                        .WithMany(appUser => appUser.MailingAddresses)
+                        .HasForeignKey(mailAddress => mailAddress.CustomerId)
+                        .IsRequired();
+                }); */
+
         }
 
     }

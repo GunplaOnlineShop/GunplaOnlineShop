@@ -10,7 +10,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GunplaOnlineShop.Controllers
 {
@@ -48,7 +49,11 @@ namespace GunplaOnlineShop.Controllers
             }
             else 
             {
-                ApplicationUser user = _userManager.FindByIdAsync(userid).Result;
+                var user = _userManager.Users
+                    .Include(x => x.MailingAddresses)
+                    .Where(i => i.Id == userid)
+                    .FirstOrDefault();
+
                 var model = new AddressViewModel();
                 if (user.MailingAddresses != null)
                 {
@@ -86,9 +91,10 @@ namespace GunplaOnlineShop.Controllers
                     IsDefaultAddress = model.IsDefaultAddress,
                     CustomerId = userId,
                 };
-
+                
                 _context.MailingAddresses.Add(newAddress);
                 await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "Customer");
                 /*
                 List<MailingAddress> a = new List<MailingAddress>();
                 if (user.MailingAddresses != null)
@@ -115,7 +121,7 @@ namespace GunplaOnlineShop.Controllers
                     { Id = newAddress.Id, } };
                     user.MailingAddresses = newOne;
                     user.PhoneNumber = newAddress.PhoneNumber.ToString();
-                }*/
+                }*
                 IdentityResult result = await _userManager.UpdateAsync(user);
                 await _context.SaveChangesAsync();
                 if (result.Succeeded)
@@ -129,10 +135,63 @@ namespace GunplaOnlineShop.Controllers
                         ModelState.AddModelError(string.Empty, error.Description);
                     }
                     return View(model);
-                }
+                }*/
             }
             return View(model);
 
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Addresses", "Customer");
+            }
+
+            var mailingAddresses = _context.MailingAddresses
+                .Where(i => i.CustomerId == _userManager.GetUserId(HttpContext.User));
+            MailingAddress target = mailingAddresses.
+                Where(i => i.Id == id)
+                .FirstOrDefault();
+            _context.MailingAddresses.Remove(target);
+            _context.SaveChanges();
+            return RedirectToAction("Addresses", "Customer");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Addresses", "Customer");
+            }
+            var mailingAddress = _context.MailingAddresses
+                .Where(i => i.CustomerId == _userManager.GetUserId(HttpContext.User));
+            MailingAddress model = mailingAddress
+                .Where(i => i.Id == id)
+                .FirstOrDefault();
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(MailingAddress model)
+        {
+            if (ModelState.IsValid)
+            {
+                var mailingAddresses = _context.MailingAddresses
+                    .Where(i => i.CustomerId == _userManager.GetUserId(HttpContext.User));
+                MailingAddress preUpdate = mailingAddresses
+                    .Where(i => i.Id == model.Id)
+                    .FirstOrDefault();
+                _context.MailingAddresses.Remove(preUpdate);
+                _context.SaveChanges();
+                _context.MailingAddresses.Add(model);
+                _context.SaveChanges();
+                return RedirectToAction("Addresses", "Customer");
+            }
+
+            return View(model);
         }
 
     }
