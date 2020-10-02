@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\Migrations\20201001211449_changeDb.cs" />
+    <Compile Remove="Data\Migrations\20201001211449_changeDb.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201002011404_change.cs" />
+    <Compile Remove="Data\Migrations\20201002011404_change.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201002020653_attempt.cs" />
+    <Compile Remove="Data\Migrations\20201002020653_attempt.Designer.cs" />
+    <Compile Remove="Data\Migrations\20201002020740_attempt.cs" />
+    <Compile Remove="Data\Migrations\20201002020740_attempt.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="appsettings.Development.json.example" />
   </ItemGroup>
 

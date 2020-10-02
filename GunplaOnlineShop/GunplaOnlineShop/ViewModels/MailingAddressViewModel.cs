@@ -1,17 +1,14 @@
-﻿using GunplaOnlineShop.Data;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GunplaOnlineShop.Models
+namespace GunplaOnlineShop.ViewModels
 {
-    public class MailingAddress
+    public class MailingAddressViewModel
     {
-
         public int Id { get; set; }
         [Required]
         [MaxLength(35)]
@@ -45,16 +42,11 @@ namespace GunplaOnlineShop.Models
         public string Country { get; set; }
         [Required]
         [MaxLength(10)]
-        [StringLength(6, ErrorMessage ="Postal code has to be 6 digits long.", MinimumLength=6)]
+        [StringLength(6, ErrorMessage = "Postal code has to be 6 digits long.", MinimumLength = 6)]
         public string PostalCode { get; set; }
         [Required]
         [Phone]
         public string PhoneNumber { get; set; }
         public bool IsDefaultAddress { get; set; }
-
-        [Required]
-        public string CustomerId { get; set; }
-        [ForeignKey("CustomerId")]
-        public virtual ApplicationUser Customer { get; set; }
     }
 }
