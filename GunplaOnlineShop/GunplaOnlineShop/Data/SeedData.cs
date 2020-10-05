@@ -347,7 +347,8 @@ namespace GunplaOnlineShop.Data
 
             await _userManager.CreateAsync(adminAccount, _configuration["AdminAccount:Password"]);
             await _userManager.AddClaimAsync(adminAccount, new Claim("IsAdmin", adminAccount.IsAdmin.ToString(), ClaimValueTypes.Boolean));
-
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(adminAccount);
+            await _userManager.ConfirmEmailAsync(adminAccount, token);
         }
 
 
