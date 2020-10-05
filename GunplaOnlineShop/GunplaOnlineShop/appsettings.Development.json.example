@@ -22,5 +22,11 @@
     //PasswordRequiresUpper;
     //PasswordRequiresUniqueChars.
     "Password": ""
+  },
+  "SMTPConfig": {
+    "Host": "smtp.gmail.com",
+    "Port": "465",
+    "Username": "",
+    "Password": ""
   }
 }
