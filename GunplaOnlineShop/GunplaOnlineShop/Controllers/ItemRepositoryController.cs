@@ -19,6 +19,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authorization;
 using GunplaOnlineShop.Utilities;
+using Microsoft.AspNetCore.Identity;
 
 namespace GunplaOnlineShop.Controllers
 {
@@ -28,7 +29,7 @@ namespace GunplaOnlineShop.Controllers
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ItemRepositoryController(AppDbContext context,IWebHostEnvironment webHostEnvironment) : base(context) 
+        public ItemRepositoryController(AppDbContext context, UserManager<ApplicationUser> userManager,IWebHostEnvironment webHostEnvironment) : base(context, userManager) 
         {
             _webHostEnvironment = webHostEnvironment;
         }
@@ -121,7 +122,7 @@ namespace GunplaOnlineShop.Controllers
                 newItem.Name = model.Name;
                 newItem.Price = model.Price;
                 newItem.Description = model.Description;
-                newItem.Qantity = model.Qantity;
+                newItem.Quantity = model.Quantity;
                 newItem.ReleaseDate = model.ReleaseDate;
                 newItem.IsAvailable = model.IsAvailable;
                 List<ItemCategory> cateList = new List<ItemCategory>();
@@ -223,7 +224,7 @@ namespace GunplaOnlineShop.Controllers
                 Name = item.Name,
                 Price = item.Price,
                 Description = item.Description,
-                Qantity = item.Qantity,
+                Quantity = item.Quantity,
                 ReleaseDate = item.ReleaseDate,
                 IsAvailable = item.IsAvailable,
                 CategoryList = categoryList
@@ -244,7 +245,7 @@ namespace GunplaOnlineShop.Controllers
                 item.Price = model.Price;
                 item.Description = model.Description;
                 item.Description = model.Description;
-                item.Qantity = model.Qantity;
+                item.Quantity = model.Quantity;
                 item.ReleaseDate = model.ReleaseDate;
                 item.IsAvailable = model.IsAvailable;
                 List<ItemCategory> cateList = new List<ItemCategory>();

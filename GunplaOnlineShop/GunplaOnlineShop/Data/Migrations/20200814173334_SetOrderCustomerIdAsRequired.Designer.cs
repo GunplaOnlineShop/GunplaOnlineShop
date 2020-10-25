@@ -3,14 +3,16 @@ using System;
 using GunplaOnlineShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GunplaOnlineShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200814173334_SetOrderCustomerIdAsRequired")]
+    partial class SetOrderCustomerIdAsRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,6 +175,9 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("varchar(60) CHARACTER SET utf8mb4")
                         .HasMaxLength(60);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
@@ -186,10 +191,6 @@ namespace GunplaOnlineShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
                         .HasMaxLength(40);
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -220,7 +221,7 @@ namespace GunplaOnlineShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("MailingAddresses");
                 });
@@ -511,11 +512,9 @@ namespace GunplaOnlineShop.Data.Migrations
 
             modelBuilder.Entity("GunplaOnlineShop.Models.MailingAddress", b =>
                 {
-                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", "Customer")
+                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", null)
                         .WithMany("MailingAddresses")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("GunplaOnlineShop.Models.Order", b =>

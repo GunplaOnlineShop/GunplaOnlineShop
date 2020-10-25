@@ -1,0 +1,145 @@
+﻿@model GunplaOnlineShop.ViewModels.AddressViewModel;
+
+@{
+    ViewBag.title = "Addresses - WhiteBase Gunpla Shop";
+}
+
+<style>
+    .fake-a {
+        border: 0px;
+        background-color: transparent;
+        color: rgb(3,102,214);
+        cursor: hand;
+    }
+</style>
+
+<main class="main-page">
+    <header class="a-header">
+        <h1 class="a-header-h1">My Account</h1>
+        <div class="a-header-addbtn">
+            <a class="btn btn--small" asp-controller="Customer" asp-action="Create">Add a New Address</a>
+        </div>
+    </header>
+
+    <div class="a-body">
+        <div class="a-back">
+            <p>
+                <a asp-controller="Customer" asp-action="Index">Return to Main Profile Page</a>
+            </p>
+        </div>
+
+
+    </div>
+
+
+    <div class="container-fluid my-5 d-flex justify-content-center">
+        <div class="card card-1">
+            <div class="card-body">
+
+                <div class="row justify-content-between mb-3">
+                    <div class="col-auto">
+                        <h5 class="mb-0">My Addresses</h5>
+                    </div>
+                </div>
+
+                @if (Model.Addresses == null)
+                {
+                    
+                }
+                else { 
+
+
+                @foreach (var address in Model.Addresses)
+                {
+                    <div class="row mb-3">
+                        <div class="col">
+                            <div class="card card-2">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="row justify-content-between">
+                                                <div class="col-auto">
+                                                    <p class="mb-1 text-dark"><b>Address @(Model.Addresses.IndexOf(address)+1)</b></p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"><b>Full Name</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.FirstName @address.LastName</p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"> <b>Street Address 1</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.Address1</p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"> <b>Street Address 2</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.Address2</p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"><b>City</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.City</p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"><b>Province</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.Province</p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"><b>Postal Code</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.PostalCode</p>
+                                                </div>
+                                            </div>
+                                            <div class="row justify-content-between">
+                                                <div class="flex-sm-col col">
+                                                    <p class="mb-1"><b>Contact</b></p>
+                                                </div>
+                                                <div class="flex-sm-col col-auto">
+                                                    <p class="mb-1">@address.PhoneNumber</p>
+                                                </div>
+                                            </div>
+
+                                            <td>
+                                                <a asp-controller="Customer" asp-action="Edit" asp-route-id="@address.Id"> Edit </a>
+
+                                                <form asp-controller="Customer" asp-action="Delete" asp-route-id="@address.Id">
+                                                    <button type="submit" onclick="return confirm('Are you sure you want to delete this address?')"> Delete </button>
+                                                </form>
+
+                                                @*<a onclick="return confirm('Are you sure you want to delete?')"> Delete </a>*@
+                                            </td>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+</main>

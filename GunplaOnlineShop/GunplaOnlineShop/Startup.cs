@@ -35,9 +35,13 @@ namespace GunplaOnlineShop
             var port = Configuration.GetValue<string>("Database:Port");
             // AppDbContext is the DbContext you need to define and place it in Model folder
             services.AddDbContext<AppDbContext>(options => options.UseMySql($"server={dbHost};port={port};database={dbSchema};user={dbUser};password={dbPassword}"));
-            // Register identity service
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<AppDbContext>();
+            // Register identity service 
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+            })
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddDefaultTokenProviders(); ;
             //config password complexity
             services.Configure<IdentityOptions>(options =>
             {

@@ -1,0 +1,61 @@
+﻿@{
+    ViewBag.title = "ProfilePage - WhiteBase Gunpla Shop";
+}
+
+
+<link href="~/css/profile.css" rel="stylesheet" />
+<div class="profile-info">
+    <div class="container">
+        <h1>My Account</h1>
+        <div class="card-row">
+
+            <a class="a-card-element" asp-controller="Customer" asp-action="OrderHistory">
+                <div class="card mb-3" style="max-width: 380px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="~/images/icons/package_icon.png" class="card-img" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Order History</h5>
+                                <p class="card-text">Track, return or buy things again</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a class="a-card-element" asp-controller="Customer" asp-action="Security">
+                <div class="card mb-3" style="max-width: 380px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="~/images/icons/security_icon.png" class="card-img security_icon" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Login&Security</h5>
+                                <p class="card-text">Edit Personal Information</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+
+            <a class="a-card-element" asp-controller="Customer" asp-action="Addresses">
+                <div class="card mb-3" style="max-width: 380px;">
+                    <div class="row no-gutters">
+                        <div class="col-md-4">
+                            <img src="~/images/icons/address_icon.png" class="card-img address_icon" alt="...">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title">Your Addresses</h5>
+                                <p class="card-text">Edit addresses for orders</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

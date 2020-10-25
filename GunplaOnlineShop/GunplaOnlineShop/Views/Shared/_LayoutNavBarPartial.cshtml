@@ -1,5 +1,4 @@
-﻿@inject Microsoft.AspNetCore.Identity.SignInManager<ApplicationUser> signInManager
-@using GunplaOnlineShop.Utilities
+﻿@using GunplaOnlineShop.Utilities
 
 <style>
     .navbar-custom {
@@ -67,7 +66,7 @@
                     else
                     {
                         <li class="nav-item d-flex align-items-center">
-                            <a class="nav-item text-white" asp-controller="Account" asp-action="Profile">
+                            <a class="nav-item text-white" asp-controller="Customer" asp-action="Index">
                                 @User.Identity.Name
                             </a>
                         </li>

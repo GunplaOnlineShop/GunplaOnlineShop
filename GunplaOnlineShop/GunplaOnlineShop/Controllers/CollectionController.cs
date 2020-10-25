@@ -13,6 +13,7 @@ using GunplaOnlineShop.Utilities;
 using GunplaOnlineShop.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
@@ -24,7 +25,7 @@ namespace GunplaOnlineShop.Controllers
     public class CollectionController : BaseController
     {
 
-        public CollectionController(AppDbContext context) : base(context)
+        public CollectionController(AppDbContext context, UserManager<ApplicationUser> userManager) : base(context, userManager)
         {
         }
 
@@ -92,7 +93,7 @@ namespace GunplaOnlineShop.Controllers
             return View(model);
         }
 
-
+        [Route("{controller}/{action}/{name}")]
         [Route("{controller}/{grade}/{action}/{name}")]
         public async Task<IActionResult> Products(string grade, string name)
         {
@@ -105,8 +106,9 @@ namespace GunplaOnlineShop.Controllers
                 .Include(i => i.Reviews)
                 .FirstOrDefaultAsync();
             if (item == null) return NotFound();
-
-            return View(item);
+            var model = new ProductViewModel();
+            model.Item = item;
+            return View(model);
         }
 
     }

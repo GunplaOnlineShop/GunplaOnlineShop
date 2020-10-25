@@ -3,14 +3,16 @@ using System;
 using GunplaOnlineShop.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace GunplaOnlineShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200809190957_AddShoppingCartLineItems")]
+    partial class AddShoppingCartLineItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -129,7 +131,7 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18, 2)");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Qantity")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ReleaseDate")
@@ -173,6 +175,9 @@ namespace GunplaOnlineShop.Data.Migrations
                         .HasColumnType("varchar(60) CHARACTER SET utf8mb4")
                         .HasMaxLength(60);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<string>("City")
                         .IsRequired()
                         .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
@@ -186,10 +191,6 @@ namespace GunplaOnlineShop.Data.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(40) CHARACTER SET utf8mb4")
                         .HasMaxLength(40);
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -220,7 +221,7 @@ namespace GunplaOnlineShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("MailingAddresses");
                 });
@@ -234,19 +235,18 @@ namespace GunplaOnlineShop.Data.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
-
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(18, 2)");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -272,24 +272,20 @@ namespace GunplaOnlineShop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("FilePath")
-                        .HasColumnName("FilePath")
-                        .HasColumnType("LONGTEXT");
-
                     b.Property<int?>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnName("Name")
-                        .HasColumnType("LONGTEXT");
+                        .HasColumnType("varchar(25) CHARACTER SET utf8mb4")
+                        .HasMaxLength(25);
 
                     b.Property<int?>("ReviewId")
                         .HasColumnType("int");
 
                     b.Property<string>("Url")
-                        .HasColumnName("URL")
-                        .HasColumnType("LONGTEXT");
+                        .HasColumnType("varchar(100) CHARACTER SET utf8mb4")
+                        .HasMaxLength(100);
 
                     b.HasKey("Id");
 
@@ -334,12 +330,11 @@ namespace GunplaOnlineShop.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -352,7 +347,7 @@ namespace GunplaOnlineShop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ItemId");
 
@@ -511,20 +506,16 @@ namespace GunplaOnlineShop.Data.Migrations
 
             modelBuilder.Entity("GunplaOnlineShop.Models.MailingAddress", b =>
                 {
-                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", "Customer")
+                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", null)
                         .WithMany("MailingAddresses")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
                 });
 
             modelBuilder.Entity("GunplaOnlineShop.Models.Order", b =>
                 {
-                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", "Customer")
+                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("GunplaOnlineShop.Models.OrderItem", b =>
@@ -568,11 +559,9 @@ namespace GunplaOnlineShop.Data.Migrations
 
             modelBuilder.Entity("GunplaOnlineShop.Models.ShoppingCartLineItem", b =>
                 {
-                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", "Customer")
+                    b.HasOne("GunplaOnlineShop.Models.ApplicationUser", null)
                         .WithMany("ShoppingCart")
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("GunplaOnlineShop.Models.Item", "Item")
                         .WithMany()

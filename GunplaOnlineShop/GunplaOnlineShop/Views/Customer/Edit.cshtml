@@ -1,0 +1,130 @@
+﻿@model MailingAddress
+
+<style>
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    @@media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+    }
+
+    .container {
+        max-width: 960px;
+    }
+
+    .lh-condensed {
+        line-height: 1.25;
+    }
+
+    .col-md-8 {
+        max-width: 100%;
+    }
+</style>
+
+<div class="container">
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+        <h2>Add a New Address</h2>
+    </div>
+
+
+    <div class="col-md-8 order-md-1">
+        <h4 class="mb-3">Billing address</h4>
+        @*<form class="needs-validation" novalidate>*@
+        <form method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6 mb-3 form-group">
+                    <label asp-for="FirstName">First name</label>
+                    <input type="text" asp-for="FirstName" class="form-control" id="firstName" placeholder="" value="@Model.FirstName" required>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="LastName">Last name</label>
+                    <input type="text" asp-for="LastName" class="form-control" id="lastName" placeholder="@Model.LastName" required>
+                    <div class="invalid-feedback">
+                        Valid last name is required.
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Company">Company</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">C</span>
+                    </div>
+                    <input type="text" class="form-control" id="company" placeholder="@Model.Company" asp-for="Company">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address1">Address</label>
+                <input type="text" class="form-control" id="address" placeholder="@Model.Address1" required asp-for="Address1">
+                <div class="invalid-feedback">
+                    Please enter your shipping address.
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address2">Address 2 <span class="text-muted">(Optional)</span></label>
+                <input type="text" class="form-control" id="address2" placeholder="@Model.Address2" asp-for="Address2">
+            </div>
+
+            <div class="row">
+                <div class="col-md-5 mb-3">
+                    <label asp-for="Country">Country</label>
+                    <input type="text" class="form-control" id="country" placeholder="@Model.Country" asp-for="Country" />
+                    <div class="invalid-feedback">
+                        Please enter a valid country.
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="Province">Province</label>
+                    <input type="text" class="form-control" id="province" placeholder="@Model.Province" asp-for="Province" />
+                    <div class="invalid-feedback">
+                        Please provide a valid state.
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label asp-for="City">City</label>
+                    <input type="text" class="form-control" id="city" placeholder="@Model.City" asp-for="City" />
+                    <div class="invalid-feedback">
+                        Please provide a valid city.
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="PostalCode">Postal Code</label>
+                    <input type="text" asp-for="PostalCode" class="form-control" id="postalcode" placeholder="@Model.PostalCode" required>
+                    <div class="invalid-feedback">
+                        Postal code required.
+                    </div>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="PhoneNumber">Phone</label>
+                    <input type="text" asp-for="PhoneNumber" class="form-control" id="phone" placeholder="@Model.PhoneNumber" required>
+                    <div class="invalid-feedback">
+                        Invalid phone number
+                    </div>
+                </div>
+                <input type="hidden" asp-for="CustomerId" />
+            </div>
+            <hr class="mb-4">
+            <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="save-info">
+                <label class="custom-control-label" for="save-info">Save this information as default</label>
+            </div>
+            <hr class="mb-4">
+            <button class="btn btn-primary btn-lg btn-block" type="submit">Save Changes</button>
+            <button class="btn btn-danger btn-lg btn-block" type="submit" asp-controller="Account" asp-action="Profile">Leave Without Saving</button>
+        </form>
+    </div>
+</div>

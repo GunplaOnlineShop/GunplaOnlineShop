@@ -1,0 +1,259 @@
+﻿<style>
+    .a-box {
+        display: block;
+        border-radius: 4px;
+        border: 1px #ddd solid;
+        background-color: #fff;
+    }
+
+    .a-box-group > .a-box.a-first, .a-box-group > .a-box:first-child {
+        border-radius: 4px 4px 0 0;
+        margin-top: 0;
+    }
+
+    #order-info {
+        border: 1px #ddd solid;
+        display: block;
+        background-color: #f6f6f6 !important;
+    }
+
+    .card-1 {
+        box-shadow: 2px 2px 10px 0px rgb(190, 108, 170)
+    }
+
+    .card-2 {
+        box-shadow: 1px 1px 3px 0px rgb(112, 115, 139);
+    }
+
+    .progress {
+        height: 5px !important;
+        margin-bottom: 0
+    }
+
+    .invoice {
+        position: relative;
+        top: -70px;
+        margin-bottom: -70px;
+    }
+</style>
+
+<div class="container-fluid my-5 d-flex justify-content-center" style="max-width: 800px;">
+
+    <div class="card card-1">
+
+        <div class="card-body">
+            <div class="row justify-content-between mb-3">
+                <div class="col-auto">
+                    <h5 class="mb-0">Order List</h5>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="card card-2">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="align-self-center">
+                                    <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="~/images/HGGTO RX-78-02 Gundam.jpg" width="150" height="150">
+                                </div>
+                                <div class="media-body my-auto text-right">
+                                    <div class="row my-auto flex-column flex-md-row">
+                                        <div class="col my-auto">
+                                            <h6 class="mb-0"> Gumpla 1</h6>
+                                        </div>
+                                        <div class="col-auto my-auto"> <small>Price: $250 CAD </small></div>
+                                        <div class="col my-auto"> <small>Qty : 1</small></div>
+                                        <div class="col my-auto">
+                                            <h6 class="mb-0">$250.00 CAD</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="m-3" />
+
+                            <div class="col-md-3 mb-3">
+                                <h6> Track Order <span><i class=" ml-2 fa fa-refresh" aria-hidden="true"></i></span></h6>
+                            </div>
+                            <div class="progress my-auto">
+                                <div class="progress-bar bg-success rounded" style="width: 60%" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="media row justify-content-between ">
+                                <div class="col-auto text-right"><span> <small class="text-right mr-sm-2"></small> <i class="fa fa-circle active"></i> </span></div>
+                                <div class="flex-col"> <span> <small class="text-right mr-sm-2">Out for delivary</small><i class="fa fa-circle active"></i></span></div>
+                                @*<div class="col-auto flex-col-auto"><small class="text-right mr-sm-2">Delivered</small><span> <i class="fa fa-circle"></i></span></div>*@
+                            </div>
+
+                            <hr class="m-3">
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <p class="mb-1 text-dark"><b>Order Details</b></p>
+                                        </div>
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"><b>Total</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">$ 262.5</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"> <b>Discount</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">$ 0</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"><b>GST 5%</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">$12.5</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"><b>Delivery Charges</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">Free</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice">
+                                <div class="col">
+                                    <p class="mb-1">Order Number : 143</p>
+                                    <p class="mb-1">Order Date : July 30, 2020</p>
+                                    <p class="mb-1">Ship To: #402 11111 87 Ave, NW</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-body mt-4">
+            <div class="row">
+                <div class="col">
+                    <div class="card card-2">
+                        <div class="card-body">
+                            <div class="media">
+                                <div class="align-self-center">
+                                    <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="~/images/HGGTO RX-78-02 Gundam.jpg" width="150" height="150">
+                                </div>
+                                <div class="media-body my-auto text-right">
+                                    <div class="row my-auto flex-column flex-md-row">
+                                        <div class="col my-auto">
+                                            <h6 class="mb-0"> Gumpla 1</h6>
+                                        </div>
+                                        <div class="col-auto my-auto"> <small>Price: $250 CAD </small></div>
+                                        <div class="col my-auto"> <small>Qty : 1</small></div>
+                                        <div class="col my-auto">
+                                            <h6 class="mb-0">$250.00 CAD</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="m-3" />
+
+                            <div class="media">
+                                <div class="align-self-center">
+                                    <img class="img-fluid my-auto align-self-center mr-2 mr-md-4 pl-0 p-0 m-0" src="~/images/HG RX-78-2 Gundam G40 (Industrial Design Ver.).jpg" width="150" height="150">
+                                </div>
+                                <div class="media-body my-auto text-right">
+                                    <div class="row my-auto flex-column flex-md-row">
+                                        <div class="col my-auto">
+                                            <h6 class="mb-0"> Gumpla 2</h6>
+                                        </div>
+                                        <div class="col-auto my-auto"> <small>Price: $220 CAD </small></div>
+                                        <div class="col my-auto"> <small>Qty : 1</small></div>
+                                        <div class="col my-auto">
+                                            <h6 class="mb-0">$200.00 CAD</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="m-3" />
+
+                            <div class="col-md-3 mb-3">
+                                <h6> Track Order <span><i class=" ml-2 fa fa-refresh" aria-hidden="true"></i></span></h6>
+                            </div>
+                            <div class="progress my-auto">
+                                <div class="progress-bar bg-danger rounded" style="width: 100%" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <div class="media row justify-content-between ">
+                                <div class="col-auto text-right"><span> <small class="text-right mr-sm-2"></small> <i class="fa fa-circle active"></i> </span></div>
+                                @*<div class="flex-col"> <span> <small class="text-right mr-sm-2"></small><i class="fa fa-circle active"></i></span></div>*@
+                                <div class="col-auto flex-col-auto"><small class="text-right mr-sm-2">Delivered</small><span> <i class="fa fa-circle"></i></span></div>
+                            </div>
+
+                            <hr class="m-3">
+
+                            <div class="row">
+                                <div class="col">
+                                    <div class="row justify-content-between">
+                                        <div class="col-auto">
+                                            <p class="mb-1 text-dark"><b>Order Details</b></p>
+                                        </div>
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"><b>Total</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">$ 470.50</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"> <b>Discount</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">$ 0</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"><b>GST 5%</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">$ 20.50</p>
+                                        </div>
+                                    </div>
+                                    <div class="row justify-content-between">
+                                        <div class="flex-sm-col text-right col">
+                                            <p class="mb-1"><b>Delivery Charges</b></p>
+                                        </div>
+                                        <div class="flex-sm-col col-auto">
+                                            <p class="mb-1">Free</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row invoice">
+                                <div class="col">
+                                    <p class="mb-1">Order Number : 123</p>
+                                    <p class="mb-1">Order Date : July 25, 2020</p>
+                                    <p class="mb-1">Ship To: #402 11111 87 Ave, NW</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>

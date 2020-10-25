@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace GunplaOnlineShop.ViewModels
 {
-    public class ShoppingCartModel
+    public class NewAddressViewModel
     {
-        public int Id { get; set; }
-        public int Quantity { get; set; }
     }
 }
